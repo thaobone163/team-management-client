@@ -25,7 +25,7 @@ export default function NavBar() {
 
     return (
         <>
-            <div className="fixed z-40 bg-white -mt-28 px-16 py-4 border-b shadow-lg shadow-gray-100 w-full flex justify-between">
+            <div className="fixed z-40 bg-white px-16 py-4 border-b shadow-lg shadow-gray-100 w-full flex justify-between">
                 <a href='' className="text-4xl font-semibold text-sky-500">Team.</a>
                 <div className='flex space-x-9'>
                     <Link href={`/user`} className="flex space-x-3 items-center">

@@ -3,25 +3,24 @@ import { Inter } from '@next/font/google'
 import SideBar from '@/components/sidebar'
 import NavBar from '@/components/navbar'
 import { useRouter } from 'next/router'
-import Profile from '@/components/user/profile'
-import Password from '@/components/user/password'
+import Overview from '@/components/project/overview'
+import List from '@/components/project/list'
 
 const inter = Inter({ subsets: ['latin'] })
 
-export default function User() {
+export default function Pending() {
     const router = useRouter()
 
     return (
         <>
             <Head>
-                <title>Update Profile</title>
+                <title>Pending Project</title>
                 <link rel="icon" href="/favicon.ico" />
             </Head>
             <main >
-                <div className='space-y-8'>
-                    <Profile></Profile>
-                    <hr className='h-1 bg-sky-200 rounded-full w-3/4'/>
-                    <Password></Password>
+                <div className='flex space-x-12'>
+                    <Overview />
+                    <div>Pending Approval</div>
                 </div>
             </main>
         </>
@@ -30,16 +29,16 @@ export default function User() {
 
 export async function getServerSideProps(context) {
     const token = context.req.headers.cookie?.split('token=')[1];
-  
+
     if (!token) {
-      return {
-        redirect: {
-          destination: 'auth/login',
-          permanent: false
+        return {
+            redirect: {
+                destination: 'auth/login',
+                permanent: false
+            }
         }
-      }
     }
     return {
-      props: {}
+        props: {}
     }
-  }
+}
