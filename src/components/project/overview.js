@@ -16,7 +16,7 @@ export default function Overview() {
                         <hr className='h-px' />
                     </div>
 
-                    <div className='text-white bg-gradient-to-t from-sky-300 to-sky-100 rounded-3xl p-5 space-y-3 shadow-md'>
+                    <div className='text-white bg-gradient-to-t from-sky-300 to-cyan-200 rounded-3xl p-5 space-y-3 shadow-md'>
                         <Link href={'/project/upcoming'}>
                             <div className='flex justify-between'>
                                 <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round" className="ai ai-Schedule"><path d="M9 20H6a4 4 0 0 1-4-4V7a4 4 0 0 1 4-4h11a4 4 0 0 1 4 4v3" /><path d="M8 2v2" /><path d="M15 2v2" /><path d="M2 8h19" /><path d="M18.5 15.643l-1.5 1.5" /><circle cx="17" cy="17" r="5" /></svg>
@@ -29,7 +29,7 @@ export default function Overview() {
                         </Link>
                     </div>
 
-                    <div className='text-white bg-gradient-to-t from-purple-400 to-purple-200 rounded-3xl p-5 space-y-3 shadow-md'>
+                    <div className='text-white bg-gradient-to-t from-purple-400 to-indigo-300 rounded-3xl p-5 space-y-3 shadow-md'>
                         <Link href={'/project/completed'}>
 
                             <div className='flex justify-between'>
@@ -43,7 +43,7 @@ export default function Overview() {
                         </Link>
                     </div>
 
-                    <div className='text-white bg-gradient-to-t from-pink-400 to-rose-200 rounded-3xl p-5 space-y-3 shadow-md'>
+                    <div className='text-white bg-gradient-to-t from-pink-400 to-fuchsia-300 rounded-3xl p-5 space-y-3 shadow-md'>
                         <Link href={'/project/pending'}>
 
                             <div className='flex justify-between'>
@@ -58,7 +58,7 @@ export default function Overview() {
                     </div>
                     
                 </div>
-                <button className='bg-white border-2 border-cyan-300 mt-3 p-2 rounded-lg text-cyan-400 font-semibold'>+ Add Project</button>
+                <button className='bg-gradient-to-t from-green-300 to-emerald-200 mt-3 p-2 rounded-lg text-white font-semibold shadow-md'>+ Add Project</button>
             </div>
         </>
     )
