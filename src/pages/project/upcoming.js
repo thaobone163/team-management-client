@@ -1,17 +1,97 @@
 import Head from 'next/head'
-import { Inter } from '@next/font/google'
-import SideBar from '@/components/sidebar'
-import NavBar from '@/components/navbar'
-import { useRouter } from 'next/router'
 import Overview from '@/components/project/overview'
 import List from '@/components/project/list'
-import Layout from '@/components/layout'
-
-const inter = Inter({ subsets: ['latin'] })
+import React from 'react'
 
 export default function Upcoming() {
-    const router = useRouter()
+    const column = React.useMemo(
+        () => [
+            {
+                Header: 'Project',
+                accessor: 'project'
+            },
+            {
+                Header: 'Role',
+                accessor: 'role'
+            },
+            {
+                Header: 'Status',
+                accessor: 'status'
+            },
+            {
+                Header: 'Progress',
+                accessor: 'progress'
+            }
+        ],
+        []
+    )
 
+    const data = React.useMemo(
+        () => [
+            {
+                project: 'U Project 1',
+                role: 'Member',
+                status: 'Processing',
+                progress: 0.72
+            },
+            {
+                project: 'U Project 2',
+                role: 'Member',
+                status: 'Processing',
+                progress: 0.2
+            },
+            {
+                project: 'U Project 3',
+                role: 'Leader',
+                status: 'Processing',
+                progress: 0.9
+            },
+            {
+                project: 'U Project 4',
+                role: 'Reviewer',
+                status: 'Processing',
+                progress: 0.25
+            },
+            {
+                project: 'U Project 5',
+                role: 'Member',
+                status: 'Processing',
+                progress: 0.55
+            },
+            {
+                project: 'U Project 6',
+                role: 'Leader',
+                status: 'Processing',
+                progress: 0.8
+            },
+            {
+                project: 'U Project 7',
+                role: 'Leader',
+                status: 'Processing',
+                progress: 0.2
+            },
+            {
+                project: 'U Project 8',
+                role: 'Reviewer',
+                status: 'Processing',
+                progress: 0.4
+            },
+            {
+                project: 'U Project 9',
+                role: 'Member',
+                status: 'Processing',
+                progress: 0.6
+            },
+            {
+                project: 'U Project 10',
+                role: 'Leader',
+                status: 'Processing',
+                progress: 0.8
+            }
+        ],
+        []
+    )
+    
     return (
         <>
             <Head>
@@ -19,9 +99,9 @@ export default function Upcoming() {
                 <link rel="icon" href="/favicon.ico" />
             </Head>
             <main >
-                <div className='flex space-x-14'>
+                <div className={`flex space-x-14 h-screen`}>
                     <Overview />
-                    <List />
+                    <List columns={column} data={data} />
                 </div>
             </main>
         </>

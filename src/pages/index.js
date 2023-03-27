@@ -30,9 +30,7 @@ export default function Home() {
   const router = useRouter()
   return (
     <>
-      <NavBar />
-      <SideBar routers={router.asPath} />
-      <div className='mt-28 ml-48 pl-10 space-y-8'>This is homepage</div>
+      <div className='space-y-8'>This is homepage</div>
     </>
   )
 }

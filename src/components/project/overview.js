@@ -9,7 +9,7 @@ export default function Overview() {
 
     return (
         <>
-            <div className='flex flex-col justify-between w-1/6'>
+            <div className='fixed flex flex-col space-y-12 w-1/6'>
                 <div className='space-y-3'>
                     <div className='text-xl font-semibold text-teal-500'>
                         Project Overview
