@@ -10,12 +10,11 @@ export default function Overview() {
     return (
         <>
             <div className='fixed flex flex-col space-y-12 w-1/6'>
-                <div className='space-y-3'>
-                    <div className='text-xl font-semibold text-teal-500'>
-                        Project Overview
-                        <hr className='h-px' />
+                <div className='space-y-4'>
+                    <div className='text-xl font-semibold text-gray-500 text-center'>
+                        <span className='bg-white px-2'>Overview</span>
+                        <hr className='h-px -mt-3' />
                     </div>
-
                     <div className='text-white bg-gradient-to-t from-sky-300 to-cyan-200 rounded-3xl p-5 space-y-3 shadow-md'>
                         <Link href={'/project/upcoming'}>
                             <div className='flex justify-between'>
@@ -56,9 +55,11 @@ export default function Overview() {
                             </div>
                         </Link>
                     </div>
-                    
+
                 </div>
-                <button className='bg-gradient-to-t from-green-300 to-emerald-200 mt-3 p-2 rounded-lg text-white font-semibold shadow-md'>+ Add Project</button>
+                <Link href={'/project/new'} className='bg-gradient-to-t from-green-300 to-emerald-200 mt-3 p-2 rounded-lg text-white font-semibold shadow-md text-center'>
+                    <button >+ Add Project</button>
+                </Link>
             </div>
         </>
     )
