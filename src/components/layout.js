@@ -11,10 +11,11 @@ export default function Layout(props) {
     function handleChange() {
         setToggle(!toggle)
     }
+
     return (
         <>
             {
-                router.asPath.split('/')[1] !== 'auth' ?
+                router.asPath.split('/')[1] !== 'auth' && props.children.props.statusCode !== 404 ?
                     <div>
                         <NavBar />
                         <SideBar toggle={toggle} onChange={handleChange} />
