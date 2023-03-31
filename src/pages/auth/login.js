@@ -50,7 +50,7 @@ export default function Login() {
     }
 
     async function handelrGoogleLogin() {
-        const left = (screen.width / 2)
+        const left = (screen.width / 2 - 500/2)
         const test = window.open('http://api.projectmana.online/api/google', '_blank', 'height=650, width=500, left=' + left + '')
         const current = window.setInterval(function () {
             if (test.closed !== false) {

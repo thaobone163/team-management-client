@@ -18,7 +18,7 @@ export default function List({ columns, data }) {
 
     return (
         <>
-            <div className="w-[90%] pl-56 -mt-4 space-y-5 flex flex-col items-end">
+            <div className="w-[90%] pl-44 -mt-4 space-y-5 flex flex-col items-end">
                 <div className='flex w-full justify-end items-center'>
                     <div className='flex items-center border px-2 rounded-l-md shadow-md shadow-gray-100 text-gray-600'>
                         <CiFilter className='w-5 h-5' />
@@ -27,7 +27,7 @@ export default function List({ columns, data }) {
                             {headers.map(option => {
                                 if (option.Header !== 'Action') {
                                     return (
-                                        <option {...option.getHeaderProps()}>
+                                        <option key={option.id} {...option.getHeaderProps()}>
                                             {option.render('Header')}
                                         </option>
                                     )
@@ -46,13 +46,13 @@ export default function List({ columns, data }) {
                     </div>
                 </div>
 
-                <div className='overflow-y-scroll overscroll-y-contain w-full h-[65%]'>
+                <div className='overflow-y-scroll overscroll-y-contain w-full h-[65%] rounded-md border shadow-lg shadow-gray-100'>
                     <table className="w-full text-sm text-left text-gray-500" {...getTableProps}>
-                        <thead className="text-md font-medium text-gray-600 uppercase bg-gray-100">
+                        <thead className="text-md font-medium text-gray-600 uppercase bg-gray-100 border-b">
                             {headerGroups.map(headerGroup => (
-                                <tr {...headerGroup.getHeaderGroupProps()}>
+                                <tr key={headerGroup.id} {...headerGroup.getHeaderGroupProps()}>
                                     {headerGroup.headers.map(column => (
-                                        <th scope="col" className="px-6 py-3" {...column.getHeaderProps(column.getSortByToggleProps())}>
+                                        <th key={column.id} scope="col" className="px-6 py-4" {...column.getHeaderProps(column.getSortByToggleProps())}>
                                             <div className='flex' title='Hold Shift to multi sort'>
                                                 {column.render('Header')}
                                                 <span>
@@ -72,18 +72,18 @@ export default function List({ columns, data }) {
                             {rows.map(row => {
                                 prepareRow(row)
                                 return (
-                                    <tr {...row.getRowProps()} className="odd:bg-white border-b even:bg-gray-50">
+                                    <tr key={row.id} {...row.getRowProps()} className="odd:bg-white border-b even:bg-gray-50">
                                         {
                                             row.cells.map(cell => {
                                                 if (cell.column.Header === 'Project') {
                                                     return (
-                                                        <th {...cell.getCellProps()} scope="row" className="px-6 py-4 font-semibold text-gray-500 whitespace-nowrap">
+                                                        <th key={Math.random()} {...cell.getCellProps()} scope="row" className="px-6 py-4 font-semibold text-gray-500 whitespace-nowrap">
                                                             {cell.render('Cell')}
                                                         </th>
                                                     )
                                                 } else if (cell.column.Header === 'Role') {
                                                     return (
-                                                        <td {...cell.getCellProps()} className="px-5">
+                                                        <td key={Math.random()} {...cell.getCellProps()} className="px-5">
                                                             <div className={cell.value === 'Member' ? "p-1.5 w-fit bg-emerald-300 text-white font-semibold rounded-lg" :
                                                                 cell.value === 'Leader' ? "p-1.5 w-fit bg-amber-200 text-amber-600 font-semibold rounded-lg" :
                                                                     "p-1.5 w-fit bg-lime-300 text-lime-600 font-semibold rounded-lg"}
@@ -96,7 +96,7 @@ export default function List({ columns, data }) {
                                                     const value = cell.value
                                                     const convert = Math.round(value * 100) + '%'
                                                     return (
-                                                        <td {...cell.getCellProps()} className="px-6 py-4 flex items-center font-medium">
+                                                        <td key={Math.random()} {...cell.getCellProps()} className="px-6 py-4 flex items-center font-medium">
                                                             <div className={`w-full bg-${value >= 0.8 ? 'green' : value >= 0.5 ? 'yellow' : 'red'}-100 rounded-full h-2 mr-3`}>
                                                                 <div className={`bg-${value >= 0.8 ? 'green-400' : (value >= 0.5 ? 'yellow-400' : 'red-400')} h-2 rounded-full`}
                                                                     style={{ width: convert }}></div>
@@ -106,7 +106,7 @@ export default function List({ columns, data }) {
                                                     )
                                                 } else if (cell.column.Header === 'Action') {
                                                     return (
-                                                        <td {...cell.getCellProps()} className="px-6 py-4 space-x-5">
+                                                        <td key={Math.random()} {...cell.getCellProps()} className="px-6 py-4 space-x-5">
                                                             <button>
                                                                 <FcApproval className='w-6 h-6' />
                                                             </button>
@@ -117,7 +117,7 @@ export default function List({ columns, data }) {
                                                     )
                                                 }
                                                 return (
-                                                    <td {...cell.getCellProps()} className="px-6 py-4">
+                                                    <td key={Math.random()} {...cell.getCellProps()} className="px-6 py-4">
                                                         {cell.render('Cell')}
                                                     </td>
                                                 )
