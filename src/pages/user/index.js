@@ -18,9 +18,7 @@ export default function User() {
                 <link rel="icon" href="/favicon.ico" />
             </Head>
             <main >
-                <NavBar></NavBar>
-                <SideBar routers={router.asPath} />
-                <div className='mt-28 ml-48 pl-10 space-y-8'>
+                <div className='space-y-8'>
                     <Profile></Profile>
                     <hr className='h-1 bg-sky-200 rounded-full w-3/4'/>
                     <Password></Password>

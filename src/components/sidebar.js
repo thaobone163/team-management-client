@@ -1,28 +1,28 @@
 import { Inter } from '@next/font/google'
 import { AiOutlineMenu, AiOutlineAppstoreAdd, AiOutlineSetting, AiOutlineMail } from 'react-icons/ai'
-import { RxPerson } from 'react-icons/rx'
+import { RxLetterCaseLowercase, RxPerson } from 'react-icons/rx'
 import { IoMdNotificationsOutline } from 'react-icons/io'
 import { BiTask } from 'react-icons/bi'
 import { TbBrandGoogleAnalytics } from 'react-icons/tb'
 import { useState } from 'react'
 import Link from 'next/link';
-
+import { useRouter } from 'next/router'
 
 const inter = Inter({ subsets: ['latin'] })
 
 export default function SideBar(props) {
     const [show, setShow] = useState(true)
-
     function toggleShow() {
         setShow(!show)
+        props.onChange()
     }
 
-    const router = props.routers.split('/')
+    const router = useRouter().asPath.split('/')
     const option = router[1]
 
     return (
         <>
-            <div className='fixed z-50 -mt-28 pt-6 px-5 flex flex-col space-y-7'>
+            <div className='fixed z-50 pt-6 px-5 flex flex-col space-y-7'>
                 <button onClick={toggleShow}>
                     <AiOutlineMenu className='w-6 h-6' />
                 </button>
@@ -34,7 +34,7 @@ export default function SideBar(props) {
                         </div>
                         {option === 'user' ? <div className='w-2 h-10 -my-4 mr-px bg-sky-400 rounded-l-md'></div> : <div className='w-2 h-10 mr-px -my-4 rounded-l-md'></div>}
                     </Link>
-                    <Link href={'/'} className='flex items-center justify-between'>
+                    <Link href={'/project/upcoming'} className='flex items-center justify-between'>
                         <div className='flex items-center'>
                             <AiOutlineAppstoreAdd className='w-6 h-6 mr-5' />
                             {show ? <span className='pr-5'>Projects</span> : null}
