@@ -8,7 +8,7 @@ export default function Upcoming() {
     return (
         <>
             <Head>
-                <title>Upcoming Project</title>
+                <title>Create Project</title>
                 <link rel="icon" href="/favicon.ico" />
             </Head>
             <main >

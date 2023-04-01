@@ -1,15 +1,41 @@
-export default function Test() {
-    return (
-        <div>
-            <p>Please select your favorite Web language:</p>
-            <input checked type="radio" id="html" name="fav_language" value="HTML" />
-            <label for="html">HTML</label><br />
-            <input type="radio" id="css" name="fav_language" value="CSS" />
-            <label for="css">CSS</label><br />
-            <input type="radio" id="javascript" name="fav_language" value="JavaScript" />
-            <label for="javascript">JavaScript</label>
+import { useFormik } from 'formik';
 
-        </div>
-    )
+export default function MyForm() {
+  const formik = useFormik({
+    initialValues: { user: {gender: ''} },
+    onSubmit: (values) => {
+      console.log(values);
+    },
+  });
 
+  return (
+    <form onSubmit={formik.handleSubmit}>
+      <label>
+        <input
+          type="radio"
+          name="user.gender"
+          value="male"
+          defaultChecked
+        />
+        Male
+      </label>
+      <label>
+        <input
+          type="radio"
+          name="user.gender"
+          value="female"
+        />
+        Female
+      </label>
+      <label>
+        <input
+          type="radio"
+          name="user.gender"
+          value="nonbinary"
+        />
+        Non-binary
+      </label>
+      <button type="submit">Submit</button>
+    </form>
+  );
 }

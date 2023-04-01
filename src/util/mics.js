@@ -15,7 +15,7 @@ async function getConfig() {
 }
 
 export const api = axios.create({
-    baseURL: 'http://api.projectmana.online'
+    baseURL: 'https://api.projectmana.online'
 })
 
 // login with email and password
@@ -44,7 +44,7 @@ export async function loginGoogle() {
     return res
 }
 
-// register 
+// register
 export async function register(full_name, email, password) {
     const res = await api.post('/api/auth/register', { full_name, email, password })
         .then(response => {
