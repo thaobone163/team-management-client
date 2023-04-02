@@ -1,16 +1,17 @@
 import { useFormik } from 'formik'
 import Cookies from 'js-cookie';
-import jwt_decode from "jwt-decode";
 import { useRouter } from 'next/router';
+import jwt_decode from "jwt-decode";
 import { useEffect, useState } from 'react';
 import { AiOutlineDelete, AiOutlineUserAdd } from 'react-icons/ai'
-import { BsSend } from 'react-icons/bs'
 
 export default function Info() {
+  const [email, setEmail] = useState(null)
+
   useEffect(() => {
     const token = Cookies.get('token')
     const decoded = jwt_decode(token)
-    formik.setFieldValue('user.email', decoded.userEmail)
+    setEmail(decoded.userEmail)
   })
 
   function addTeammate() {
@@ -43,6 +44,7 @@ export default function Info() {
   })
 
   function handleCreate(values) {
+    values.user.email = email
     new Promise((r) => setTimeout(r, 500));
     let count = 0
     if (values.user.role === 'Leader') {
@@ -86,7 +88,7 @@ export default function Info() {
             <input
               type={'email'}
               disabled={true}
-              value={formik.values.user.email}
+              value={email}
               className="border border-sky-500 text-gray-900 text-sm rounded-md w-full py-3 px-7 focus:ring-0 focus:border-sky-500 shadow"
             />
             <div className="flex items-center space-x-4 text-sm text-gray-700">
