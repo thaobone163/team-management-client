@@ -1,18 +1,33 @@
 import Head from 'next/head'
 import Overview from '@/components/project/overview'
 import React from 'react'
-import Info from "@/components/project/info";
+import { useRouter } from 'next/router'
+import Info from '@/components/project/info'
 
-export default function Create() {
+export default function Edit() {
+  const router = useRouter()
+  const {projectId} = router.query
+
   const data = React.useMemo(
     () => (
       {
-        project_name: '',
+        project_name: `Project ${projectId}`,
         user: {
           email: '',
           role: 'Leader'
         },
-        teammate: []
+        teammate: [
+          {
+            email: 'teammate1@gmail.com',
+            role: 'Member',
+            confirm: 'Joined'
+          },
+          {
+            email: 'teammate2@gmail.com',
+            role: 'Reviewer',
+            confirm: 'Wating'
+          }
+        ]
       }
     )
   )
@@ -20,7 +35,7 @@ export default function Create() {
   return (
     <>
       <Head>
-        <title>Create Project</title>
+        <title>Edit Project</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main >
@@ -28,7 +43,7 @@ export default function Create() {
           <Overview />
           <div className="pl-56 space-y-5">
             <div className='text-3xl font-semibold text-teal-500'>
-              Create New Project
+              Edit Project
             </div>
             <Info data={data} />
           </div>

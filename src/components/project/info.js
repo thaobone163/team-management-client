@@ -4,9 +4,15 @@ import { useRouter } from 'next/router';
 import jwt_decode from "jwt-decode";
 import { useEffect, useState } from 'react';
 import { AiOutlineDelete, AiOutlineUserAdd } from 'react-icons/ai'
+import { CiEdit } from 'react-icons/ci'
+import { FcCancel, FcApproval } from 'react-icons/fc'
 
-export default function Info() {
-  const [email, setEmail] = useState(null)
+export default function Info({ data }) {
+  const [email, setEmail] = useState('')
+  const [isDisable, setIsDisable] = useState(true)
+
+  const router = useRouter()
+  const path = router.asPath
 
   useEffect(() => {
     const token = Cookies.get('token')
@@ -14,12 +20,21 @@ export default function Info() {
     setEmail(decoded.userEmail)
   })
 
+  function toggleDisable() {
+    setIsDisable(!isDisable)
+  }
+
+  function cancel() {
+    setIsDisable(!isDisable)
+    router.reload()
+  }
+
   function addTeammate() {
     formik.setValues({
       ...formik.values,
       teammate: [
         ...formik.values.teammate,
-        { email: '', role: '', confirm: false }
+        { email: '', role: '', confirm: null }
       ]
     });
   }
@@ -32,18 +47,11 @@ export default function Info() {
   }
 
   const formik = useFormik({
-    initialValues: {
-      project_name: '',
-      user: {
-        email: '',
-        role: 'Leader'
-      },
-      teammate: []
-    },
-    onSubmit: handleCreate,
+    initialValues: data,
+    onSubmit: handleSubmit,
   })
 
-  function handleCreate(values) {
+  function handleSubmit(values) {
     values.user.email = email
     new Promise((r) => setTimeout(r, 500));
     let count = 0
@@ -72,12 +80,13 @@ export default function Info() {
             Project Name
           </div>
           <input id='project_name'
+            disabled={isDisable}
             type='text'
             placeholder="Enter your project name"
             value={formik.values.project_name}
             onChange={formik.handleChange}
             required
-            className="border border-sky-500 text-gray-900 text-sm rounded-md w-full py-3 px-7 focus:ring-0 focus:border-sky-500 shadow"
+            className={`${isDisable ? 'cursor-not-allowed' : ''} border border-sky-500 text-gray-900 text-sm rounded-md w-full py-3 px-7 focus:ring-0 focus:border-sky-500 shadow`}
           />
         </div>
         <div className="flex flex-col space-y-2">
@@ -89,11 +98,12 @@ export default function Info() {
               type={'email'}
               disabled={true}
               value={email}
-              className="border border-sky-500 text-gray-900 text-sm rounded-md w-full py-3 px-7 focus:ring-0 focus:border-sky-500 shadow"
+              className="cursor-not-allowed border border-sky-500 text-gray-900 text-sm rounded-md w-full py-3 px-7 focus:ring-0 focus:border-sky-500 shadow"
             />
             <div className="flex items-center space-x-4 text-sm text-gray-700">
-              <label className="flex items-center">
+              <label className={`${isDisable ? 'cursor-not-allowed' : ''} flex items-center`}>
                 <input
+                  disabled={isDisable}
                   name='user.role'
                   type={'radio'}
                   value={'Member'}
@@ -104,8 +114,9 @@ export default function Info() {
                 />
                 Member
               </label>
-              <label className="flex items-center">
+              <label className={`${isDisable ? 'cursor-not-allowed' : ''} flex items-center`}>
                 <input
+                  disabled={isDisable}
                   name='user.role'
                   type={'radio'}
                   value={'Reviewer'}
@@ -116,8 +127,9 @@ export default function Info() {
                 />
                 Reviewer
               </label>
-              <label className="flex items-center">
+              <label className={`${isDisable ? 'cursor-not-allowed' : ''} flex items-center`}>
                 <input
+                  disabled={isDisable}
                   name='user.role'
                   type={'radio'}
                   value={'Leader'}
@@ -138,17 +150,19 @@ export default function Info() {
           {formik.values.teammate.map((item, index) => (
             <div key={index} className="flex space-x-5 items-center">
               <input
+                disabled={item.confirm !== null}
                 type={'email'}
                 id={`teammate[${index}].email`}
                 value={item.email}
                 onChange={formik.handleChange}
                 required
                 placeholder={`Enter your teammates email address`}
-                className="border border-sky-500 text-gray-900 text-sm rounded-md py-3 px-7 focus:ring-0 focus:border-sky-500 shadow"
+                className={`border border-sky-500 text-gray-900 text-sm rounded-md py-3 px-7 focus:ring-0 focus:border-sky-500 shadow ${item.confirm !== null ? 'cursor-not-allowed' : ''}`}
               />
               <div className="flex items-center space-x-4 text-sm text-gray-700">
-                <label className="flex items-center">
+                <label className={`${isDisable ? 'cursor-not-allowed' : ''} flex items-center`}>
                   <input
+                    disabled={isDisable}
                     type={'radio'}
                     name={`teammate[${index}].role`}
                     value={'Member'}
@@ -159,8 +173,9 @@ export default function Info() {
                   />
                   Member
                 </label>
-                <label className="flex items-center">
+                <label className={`${isDisable ? 'cursor-not-allowed' : ''} flex items-center`}>
                   <input
+                    disabled={isDisable}
                     type={'radio'}
                     name={`teammate[${index}].role`}
                     value={'Reviewer'}
@@ -171,8 +186,9 @@ export default function Info() {
                   />
                   Reviewer
                 </label>
-                <label className="flex items-center">
+                <label className={`${isDisable ? 'cursor-not-allowed' : ''} flex items-center`}>
                   <input
+                    disabled={isDisable}
                     type={'radio'}
                     name={`teammate[${index}].role`}
                     value={'Leader'}
@@ -192,9 +208,9 @@ export default function Info() {
                 <AiOutlineDelete className='w-6 h-6 text-rose-600' />
               </button>
               {
-                useRouter().asPath.split('/')[2] !== 'new' ?
+                item.confirm !== null ?
                   <div className='border shadow p-2 rounded text-sm text-gray-700'>
-                    {item.confirm ? 'Comfirmed' : 'Waiting'}
+                    {item.confirm}
                   </div> : null
               }
             </div>
@@ -209,11 +225,29 @@ export default function Info() {
           </div>
         </div>
         <div className='flex justify-end'>
-          <button type='submit' className=' bg-gradient-to-tr from-emerald-500 to-emerald-400 text-lg text-white font-bold rounded px-8 py-2'>
-            Create
-          </button>
+          {
+            path === '/project/new' ?
+              <button type='submit' className=' bg-gradient-to-tr from-emerald-500 to-emerald-400 text-lg text-white font-bold rounded px-8 py-2'>
+                Create
+              </button> :
+              isDisable ?
+                <button onClick={toggleDisable} className='flex text-teal-700 bg-teal-50 font-bold rounded-md px-3 py-2 shadow-lg'>
+                  <CiEdit className='w-6 h-6 mr-3' />
+                  Edit
+                </button> :
+                <div className='flex space-x-5'>
+                  <button type='submit' className='flex text-emerald-700 font-bold bg-emerald-50 rounded-md px-3 py-2 shadow-lg'>
+                    <FcApproval className='w-6 h-6 mr-3' />
+                    Save
+                  </button>
+                  <button onClick={cancel} className='flex text-rose-700 font-bold bg-rose-50 rounded-md px-3 py-2 shadow-lg'>
+                    <FcCancel className='w-6 h-6 mr-3' />
+                    Cancel
+                  </button>
+                </div>
+          }
         </div>
-      </form>
+      </form >
     </>
   )
 }
