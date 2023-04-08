@@ -117,3 +117,16 @@ export async function updateProfile(full_name, email, dob, phone_number, gender)
     return res
 }
 
+// create project
+export async function createProject(name, description, listUserInvite) {
+    const res = await api.post('/api/project/create', { name, description, listUserInvite }, await getConfig())
+        .then(response => {
+            return response.data
+        })
+        .catch(error => {
+            return error.response.data
+        })
+        console.log(res);
+    return res
+}
+

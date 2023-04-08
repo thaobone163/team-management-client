@@ -6,13 +6,15 @@ import { useEffect, useState } from 'react';
 import { AiOutlineDelete, AiOutlineUserAdd } from 'react-icons/ai'
 import { CiEdit } from 'react-icons/ci'
 import { FcCancel, FcApproval } from 'react-icons/fc'
+import { createProject } from '@/util/mics';
 
 export default function Info({ data }) {
   const [email, setEmail] = useState('')
-  const [isDisable, setIsDisable] = useState(true)
 
   const router = useRouter()
   const path = router.asPath
+
+  const [isDisable, setIsDisable] = useState(path !== '/project/new')
 
   useEffect(() => {
     const token = Cookies.get('token')
@@ -53,28 +55,44 @@ export default function Info({ data }) {
 
   function handleSubmit(values) {
     values.user.email = email
-    new Promise((r) => setTimeout(r, 500));
     let count = 0
+    let check = true
+    let mapper = new Map()
+    mapper.set(values.user.email, true)
     if (values.user.role === 'Leader') {
       count++
     }
     values.teammate.map(item => {
+      if (mapper.has(item.email)) {
+        mapper.set(item.email, false)
+        check = false
+      } else {
+        mapper.set(item.email, true)
+      }
       if (item.role === 'Leader') {
         count++
       }
     })
-    if (count === 0) {
-      alert('Khong co leader kia!');
+    if (count != 1) {
+      alert('Project chỉ được phép có 01 Leader. Vui lòng kiểm tra lại!')
+    } else if (!check) {
+      alert('Email của thành viên bị trùng. Vui lòng kiểm tra lại!')
+    } else {
+      if (path === '/project/new') {
+        createProject(values.project_name, values.description, values.teammate).then((data) => {
+          if (data.success) {
+            router.push('/project/1')
+          } else {
+            alert(data.message)
+          }
+        })
+      }
     }
-    if (count > 1) {
-      alert('Chi can 1 leader thoi')
-    }
-    alert(JSON.stringify(values, null, 2));
   }
 
   return (
     <>
-      <form onSubmit={formik.handleSubmit} className="flex flex-col space-y-8">
+      <form onSubmit={formik.handleSubmit} className="flex flex-col space-y-4">
         <div className="flex flex-col space-y-2">
           <div className="font-medium text-teal-600">
             Project Name
@@ -91,6 +109,19 @@ export default function Info({ data }) {
         </div>
         <div className="flex flex-col space-y-2">
           <div className="font-medium text-teal-600">
+            Description
+          </div>
+          <textarea id='description'
+            disabled={isDisable}
+            type='text'
+            placeholder="Enter your project description"
+            value={formik.values.description}
+            onChange={formik.handleChange}
+            className={`${isDisable ? 'cursor-not-allowed' : ''} border border-sky-500 text-gray-900 text-sm rounded-md w-full py-3 px-7 focus:ring-0 focus:border-sky-500 shadow`}
+          />
+        </div>
+        <div className="flex flex-col space-y-2">
+          <div className="font-medium text-teal-600">
             Your Role
           </div>
           <div className="flex space-x-5 items-center">
@@ -101,9 +132,9 @@ export default function Info({ data }) {
               className="cursor-not-allowed border border-sky-500 text-gray-900 text-sm rounded-md w-full py-3 px-7 focus:ring-0 focus:border-sky-500 shadow"
             />
             <div className="flex items-center space-x-4 text-sm text-gray-700">
-              <label className={`${isDisable ? 'cursor-not-allowed' : ''} flex items-center`}>
+              <label className={`${isDisable || path === '/project/new' ? 'cursor-not-allowed' : ''} flex items-center`}>
                 <input
-                  disabled={isDisable}
+                  disabled={isDisable || path === '/project/new'}
                   name='user.role'
                   type={'radio'}
                   value={'Member'}
@@ -114,9 +145,9 @@ export default function Info({ data }) {
                 />
                 Member
               </label>
-              <label className={`${isDisable ? 'cursor-not-allowed' : ''} flex items-center`}>
+              <label className={`${isDisable || path === '/project/new' ? 'cursor-not-allowed' : ''} flex items-center`}>
                 <input
-                  disabled={isDisable}
+                  disabled={isDisable || path === '/project/new'}
                   name='user.role'
                   type={'radio'}
                   value={'Reviewer'}

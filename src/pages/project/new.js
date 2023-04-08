@@ -8,6 +8,7 @@ export default function Create() {
     () => (
       {
         project_name: '',
+        description: '',
         user: {
           email: '',
           role: 'Leader'

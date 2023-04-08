@@ -1,5 +1,6 @@
 import { useState } from "react";
 import OverviewDetail from "./overview";
+import Planning from "./planning";
 
 export default function Detail() {
   const [openTab, setOpenTab] = useState('Overview');
@@ -115,7 +116,7 @@ export default function Detail() {
                   <OverviewDetail/>
                 </div>
                 <div className={openTab === 'Planning' ? "block" : "hidden"} id="planning">
-                  Planning tab
+                  <Planning/>
                 </div>
               </div>
             </div>
