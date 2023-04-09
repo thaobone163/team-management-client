@@ -1,13 +1,42 @@
 import Head from 'next/head'
 import Overview from '@/components/project/overview'
-import React from 'react'
+import React, { useState } from 'react'
 import { useRouter } from 'next/router'
 import Info from '@/components/project/info'
+import { getProjectId } from '@/util/mics'
 
 export default function Edit() {
   const router = useRouter()
-  const {projectId} = router.query
+  const { projectId } = router.query
+  // const [data, setData] = useState()
 
+  // getProjectId(projectId).then((data) => {
+  //   if (data.success) {
+  //     setData(
+  //       {
+  //         project_name: data.name,
+  //         user: {
+  //           email: '',
+  //           role: 'Leader'
+  //         },
+  //         teammate: [
+  //           {
+  //             email: 'teammate1@gmail.com',
+  //             role: 'Member',
+  //             confirm: 'Joined'
+  //           },
+  //           {
+  //             email: 'teammate2@gmail.com',
+  //             role: 'Reviewer',
+  //             confirm: 'Wating'
+  //           }
+  //         ]
+  //       }
+  //     )
+  //   } else {
+  //     alert(data.message)
+  //   }
+  // })
   const data = React.useMemo(
     () => (
       {

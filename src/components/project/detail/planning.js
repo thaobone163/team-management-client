@@ -23,7 +23,7 @@ export default function Planning() {
                                 <input type='text'
                                     id='topic'
                                     className='mt-2 border border-sky-500 text-gray-900 text-sm rounded-lg w-full p-4 focus:ring-0 focus:border-sky-500'
-                                    value={'Team-management'}
+                                    defaultValue={'Team-management'}
                                 // onChange={formik.handleChange}
                                 />
                             </div>
@@ -35,7 +35,7 @@ export default function Planning() {
                                 <textarea type='text'
                                     id='target'
                                     className='mt-2 border border-sky-500 text-gray-900 text-sm rounded-lg w-full h-fit p-4 focus:ring-0 focus:border-sky-500'
-                                    value={'Build a website to support team work management'}
+                                    defaultValue={'Build a website to support team work management'}
                                 // onChange={formik.handleChange}
                                 />
                             </div>

@@ -81,7 +81,7 @@ export default function Info({ data }) {
       if (path === '/project/new') {
         createProject(values.project_name, values.description, values.teammate).then((data) => {
           if (data.success) {
-            router.push('/project/1')
+            router.push(`/project/${data.project_id}`)
           } else {
             alert(data.message)
           }

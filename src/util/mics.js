@@ -130,3 +130,15 @@ export async function createProject(name, description, listUserInvite) {
     return res
 }
 
+// get project by id
+export async function getProjectId(id) {
+    const res = await api.get(`/api/project/${id}`, await getConfig())
+        .then(response => {
+            return response.data
+        })
+        .catch(error => {
+            return error.response.data
+        })
+        console.log(res);
+    return res
+}
