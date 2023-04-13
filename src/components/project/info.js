@@ -6,9 +6,9 @@ import { useEffect, useState } from 'react';
 import { AiOutlineDelete, AiOutlineUserAdd } from 'react-icons/ai'
 import { CiEdit } from 'react-icons/ci'
 import { FcCancel, FcApproval } from 'react-icons/fc'
-import { createProject } from '@/util/mics';
+import { createProject, updateProjectId } from '@/util/mics';
 
-export default function Info({ data }) {
+export default function Info({ value, data }) {
   const [email, setEmail] = useState('')
 
   const router = useRouter()
@@ -36,7 +36,7 @@ export default function Info({ data }) {
       ...formik.values,
       teammate: [
         ...formik.values.teammate,
-        { email: '', role: '', confirm: null }
+        { email: '', role: '', status: 'Waiting' }
       ]
     });
   }
@@ -49,7 +49,7 @@ export default function Info({ data }) {
   }
 
   const formik = useFormik({
-    initialValues: data,
+    initialValues: value,
     onSubmit: handleSubmit,
   })
 
@@ -86,6 +86,19 @@ export default function Info({ data }) {
             alert(data.message)
           }
         })
+      } else {
+        updateProjectId(data.project_id, values.project_name, values.description, data.project_status,
+          {
+            email: value.user.email,
+            role: values.user.role,
+            status: 'Joined'
+          }, values.teammate). then((data) => {
+            if (data.success) {
+              router.reload()
+            } else {
+              alert(data.message)
+            }
+          })
       }
     }
   }
@@ -114,6 +127,7 @@ export default function Info({ data }) {
           <textarea id='description'
             disabled={isDisable}
             type='text'
+            rows={3}
             placeholder="Enter your project description"
             value={formik.values.description}
             onChange={formik.handleChange}
@@ -181,14 +195,14 @@ export default function Info({ data }) {
           {formik.values.teammate.map((item, index) => (
             <div key={index} className="flex space-x-5 items-center">
               <input
-                disabled={item.confirm !== null}
+                disabled={isDisable}
                 type={'email'}
                 id={`teammate[${index}].email`}
                 value={item.email}
                 onChange={formik.handleChange}
                 required
                 placeholder={`Enter your teammates email address`}
-                className={`border border-sky-500 text-gray-900 text-sm rounded-md py-3 px-7 focus:ring-0 focus:border-sky-500 shadow ${item.confirm !== null ? 'cursor-not-allowed' : ''}`}
+                className={`border border-sky-500 text-gray-900 text-sm rounded-md py-3 px-7 focus:ring-0 focus:border-sky-500 shadow ${isDisable ? 'cursor-not-allowed' : ''}`}
               />
               <div className="flex items-center space-x-4 text-sm text-gray-700">
                 <label className={`${isDisable ? 'cursor-not-allowed' : ''} flex items-center`}>
@@ -231,23 +245,23 @@ export default function Info({ data }) {
                   Leader
                 </label>
               </div>
-              <button
+              <button disabled={isDisable}
                 onClick={() => removeTeammate(index)}
                 type='button'
-                className='border shadow p-1.5 rounded'
+                className={`border shadow p-1.5 rounded ${isDisable ? 'cursor-not-allowed' : ''}`}
               >
                 <AiOutlineDelete className='w-6 h-6 text-rose-600' />
               </button>
               {
-                item.confirm !== null ?
+                path !== '/project/new' ?
                   <div className='border shadow p-2 rounded text-sm text-gray-700'>
-                    {item.confirm}
+                    {item.status}
                   </div> : null
               }
             </div>
           ))
           }
-          <button onClick={addTeammate} type='button' className='mt-3 flex items-center text-gray-800 shadow rounded py-1.5 px-3'>
+          <button disabled={isDisable} onClick={addTeammate} type='button' className={`mt-3 flex items-center text-gray-800 shadow rounded py-1.5 px-3 ${isDisable ? 'cursor-not-allowed' : ''}`}>
             <AiOutlineUserAdd className='mr-2 w-5 h-5' />
             Add Member
           </button>
@@ -262,7 +276,7 @@ export default function Info({ data }) {
                 Create
               </button> :
               isDisable ?
-                <button onClick={toggleDisable} className='flex text-teal-700 bg-teal-50 font-bold rounded-md px-3 py-2 shadow-lg'>
+                <button disabled={value.user.role !== 'Leader'} title={value.user.role !== 'Leader'? 'You do not have permission to edit' : null} onClick={toggleDisable} className='flex text-teal-700 bg-teal-50 font-bold rounded-md px-3 py-2 shadow-lg'>
                   <CiEdit className='w-6 h-6 mr-3' />
                   Edit
                 </button> :

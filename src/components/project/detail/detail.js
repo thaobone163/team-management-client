@@ -2,7 +2,7 @@ import { useState } from "react";
 import OverviewDetail from "./overview";
 import Planning from "./planning";
 
-export default function Detail() {
+export default function Detail({ data }) {
   const [openTab, setOpenTab] = useState('Overview');
 
   return (
@@ -113,10 +113,10 @@ export default function Detail() {
             <div className="py-3 flex-auto w-full">
               <div className="tab-content tab-space w-full p-5 rounded-md border bg-gray-50">
                 <div className={`w-full ${openTab === 'Overview' ? "block" : "hidden"}`} id="overview">
-                  <OverviewDetail/>
+                  <OverviewDetail data={data} />
                 </div>
                 <div className={openTab === 'Planning' ? "block" : "hidden"} id="planning">
-                  <Planning/>
+                  <Planning />
                 </div>
               </div>
             </div>

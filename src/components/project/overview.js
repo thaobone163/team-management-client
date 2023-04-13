@@ -3,7 +3,7 @@ import { MdOutlineTaskAlt, MdApproval } from 'react-icons/md'
 import Link from 'next/link';
 
 
-export default function Overview() {
+export default function Overview({overview}) {
     const router = useRouter().asPath.split('/')
     const option = router[2]
 
@@ -19,7 +19,7 @@ export default function Overview() {
                         <Link href={'/project/upcoming'}>
                             <div className='flex justify-between'>
                                 <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round" className="ai ai-Schedule"><path d="M9 20H6a4 4 0 0 1-4-4V7a4 4 0 0 1 4-4h11a4 4 0 0 1 4 4v3" /><path d="M8 2v2" /><path d="M15 2v2" /><path d="M2 8h19" /><path d="M18.5 15.643l-1.5 1.5" /><circle cx="17" cy="17" r="5" /></svg>
-                                <span className='font-bold text-3xl'>5</span>
+                                <span className='font-bold text-3xl'>{overview.data.countProcessing}</span>
                             </div>
                             <div className='flex justify-between items-end'>
                                 <span className='w-1/3 text-md font-semibold'>Upcoming Projects</span>
@@ -33,7 +33,7 @@ export default function Overview() {
 
                             <div className='flex justify-between'>
                                 <MdOutlineTaskAlt className='w-9 h-9' />
-                                <span className='font-bold text-3xl'>10</span>
+                                <span className='font-bold text-3xl'>{overview.data.countCompleted}</span>
                             </div>
                             <div className='flex justify-between items-end'>
                                 <span className='w-1/3 text-md font-semibold'>Completed Projects</span>
@@ -47,7 +47,7 @@ export default function Overview() {
 
                             <div className='flex justify-between'>
                                 <MdApproval className='w-9 h-9' />
-                                <span className='font-bold text-3xl'>3</span>
+                                <span className='font-bold text-3xl'>{overview.data.countPending}</span>
                             </div>
                             <div className='flex justify-between items-end'>
                                 <span className='w-1/3 text-md font-semibold'>Pending Approval</span>

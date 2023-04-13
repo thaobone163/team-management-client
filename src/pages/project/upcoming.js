@@ -1,125 +1,117 @@
 import Head from 'next/head'
 import Overview from '@/components/project/overview'
 import List from '@/components/project/list'
-import React from 'react'
+import React, { useEffect } from 'react'
+import axios from 'axios'
+import { useRouter } from 'next/router'
+import { getProjectList, getUserByEmail } from '@/util/mics'
 
-export default function Upcoming() {
-    const column = React.useMemo(
-        () => [
-            {
-                Header: 'Project',
-                accessor: 'project'
-            },
-            {
-                Header: 'Role',
-                accessor: 'role'
-            },
-            {
-                Header: 'Status',
-                accessor: 'status'
-            },
-            {
-                Header: 'Progress',
-                accessor: 'progress'
-            }
-        ],
-        []
-    )
-
-    const data = React.useMemo(
-        () => [
-            {
-                project: 'U Project 1',
-                role: 'Member',
-                status: 'Processing',
-                progress: 0.72
-            },
-            {
-                project: 'U Project 2',
-                role: 'Member',
-                status: 'Processing',
-                progress: 0.2
-            },
-            {
-                project: 'U Project 3',
-                role: 'Leader',
-                status: 'Processing',
-                progress: 0.9
-            },
-            {
-                project: 'U Project 4',
-                role: 'Reviewer',
-                status: 'Processing',
-                progress: 0.25
-            },
-            {
-                project: 'U Project 5',
-                role: 'Member',
-                status: 'Processing',
-                progress: 0.55
-            },
-            {
-                project: 'U Project 6',
-                role: 'Leader',
-                status: 'Processing',
-                progress: 0.8
-            },
-            {
-                project: 'U Project 7',
-                role: 'Leader',
-                status: 'Processing',
-                progress: 0.2
-            },
-            {
-                project: 'U Project 8',
-                role: 'Reviewer',
-                status: 'Processing',
-                progress: 0.4
-            },
-            {
-                project: 'U Project 9',
-                role: 'Member',
-                status: 'Processing',
-                progress: 0.6
-            },
-            {
-                project: 'U Project 10',
-                role: 'Leader',
-                status: 'Processing',
-                progress: 0.8
-            }
-        ],
-        []
-    )
-    
+export default function Upcoming({ overview, error, list }) {
+  const router = useRouter()
+  if (error) {
+    useEffect(() => {
+      alert(error)
+      router.reload()
+    })
     return (
-        <>
-            <Head>
-                <title>Upcoming Project</title>
-                <link rel="icon" href="/favicon.ico" />
-            </Head>
-            <main >
-                <div className={`flex space-x-14 h-screen`}>
-                    <Overview />
-                    <List columns={column} data={data} />
-                </div>
-            </main>
-        </>
+      <></>
     )
+  }
+
+  const column = React.useMemo(
+    () => [
+      {
+        Header: 'Project',
+        accessor: 'project'
+      },
+      {
+        Header: 'Role',
+        accessor: 'role'
+      },
+      {
+        Header: 'Status',
+        accessor: 'status'
+      },
+      {
+        Header: 'Progress',
+        accessor: 'progress'
+      }
+    ],
+    []
+  )
+
+  const data = React.useMemo(
+    () => {
+      const data = []
+      list.map((item) => {
+        data.push({
+          id: item.id,
+          project: item.name,
+          role: item.user.role,
+          status: 'Processing',
+          progress: 0.2
+        })
+      })
+      return data
+    },
+    []
+  )
+
+  return (
+    <>
+      <Head>
+        <title>Upcoming Project</title>
+        <link rel="icon" href="/favicon.ico" />
+      </Head>
+      <main >
+        <div className={`flex space-x-14`}>
+          <Overview overview={overview} />
+          <List columns={column} data={data} />
+        </div>
+      </main>
+    </>
+  )
 }
 
 export async function getServerSideProps(context) {
-    const token = context.req.headers.cookie?.split('token=')[1];
+  const token = context.req.headers.cookie?.split('token=')[1];
 
-    if (!token) {
-        return {
-            redirect: {
-                destination: '/auth/login',
-                permanent: false
-            }
-        }
-    }
+  if (!token) {
     return {
-        props: {}
+      redirect: {
+        destination: '/auth/login',
+        permanent: false
+      }
     }
+  }
+
+  try {
+    const res = await axios.get(`https://api.projectmana.online//api/user/projects/count`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+
+    const list = await axios.get(`https://api.projectmana.online//api/project/list?status=processing`,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+
+    return {
+      props: {
+        overview: res.data,
+        list: list.data.data.projects
+      }
+    }
+  } catch (error) {
+    console.log(error.response.data);
+    return {
+      props: {
+        error: error.response.data.message,
+      },
+    }
+  }
 }

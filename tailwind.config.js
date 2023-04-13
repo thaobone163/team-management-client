@@ -6,11 +6,13 @@ module.exports = {
     "./src/**/*.{js,ts,jsx,tsx}",
     "./pages/**/*.{js,jsx,ts,tsx}",
     "./public/**/*.html",
+    'node_modules/preline/dist/*.js',
   ],
   theme: {
     extend: {},
   },
   plugins: [
-    require("flowbite/plugin")
+    require("flowbite/plugin"),
+    require('preline/plugin'),
   ],
 }

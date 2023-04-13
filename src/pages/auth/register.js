@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { Inter } from '@next/font/google'
 import Poster from '@/components/poster';
 import Link from 'next/link';
-import { register } from '@/util/mics';
+import { loginGoogle, register } from '@/util/mics';
 import { useFormik } from 'formik';
 import { useRouter } from 'next/router';
 
@@ -52,19 +52,19 @@ export default function Register() {
     }
 
     async function handelrGoogleRegister() {
-        const left = (screen.width / 2)
-        const test = window.open('http://api.projectmana.online/api/google', '_blank', 'height=650, width=500, left=' + left + '')
-        const current = window.setInterval(function () {
-            if (test.closed !== false) {
-                window.clearInterval(current)
-                loginGoogle().then((data) => {
-                    if (data.success) {
-                        setModalInfo(data);
-                        router.replace('/user')
-                    } else setModalInfo(data);
-                })
-            }
-        })
+      const left = (screen.width / 2 - 500/2)
+      const test = window.open('http://api.projectmana.online/api/google', '_blank', 'height=650, width=500, left=' + left + '')
+      const current = window.setInterval(function () {
+          if (test.closed !== false) {
+              window.clearInterval(current)
+              loginGoogle().then((data) => {
+                  if (data.success) {
+                      setModalInfo(data);
+                      router.replace('/')
+                  } else setModalInfo(data);
+              })
+          }
+      })
     }
 
     // Password type

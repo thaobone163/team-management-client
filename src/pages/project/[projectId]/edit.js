@@ -1,62 +1,35 @@
 import Head from 'next/head'
 import Overview from '@/components/project/overview'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
 import Info from '@/components/project/info'
 import { getProjectId } from '@/util/mics'
+import axios from 'axios'
 
-export default function Edit() {
+export default function Edit({ data, error, overview }) {
   const router = useRouter()
   const { projectId } = router.query
-  // const [data, setData] = useState()
 
-  // getProjectId(projectId).then((data) => {
-  //   if (data.success) {
-  //     setData(
-  //       {
-  //         project_name: data.name,
-  //         user: {
-  //           email: '',
-  //           role: 'Leader'
-  //         },
-  //         teammate: [
-  //           {
-  //             email: 'teammate1@gmail.com',
-  //             role: 'Member',
-  //             confirm: 'Joined'
-  //           },
-  //           {
-  //             email: 'teammate2@gmail.com',
-  //             role: 'Reviewer',
-  //             confirm: 'Wating'
-  //           }
-  //         ]
-  //       }
-  //     )
-  //   } else {
-  //     alert(data.message)
-  //   }
-  // })
-  const data = React.useMemo(
+  if (error) {
+    useEffect(() => {
+      alert(error)
+      router.replace('/project/upcoming')
+    })
+    return (
+      <></>
+    )
+  }
+
+  const value = React.useMemo(
     () => (
       {
-        project_name: `Project ${projectId}`,
+        project_name: data.project_name,
+        description: data.project_description,
         user: {
           email: '',
-          role: 'Leader'
+          role: data.user.role
         },
-        teammate: [
-          {
-            email: 'teammate1@gmail.com',
-            role: 'Member',
-            confirm: 'Joined'
-          },
-          {
-            email: 'teammate2@gmail.com',
-            role: 'Reviewer',
-            confirm: 'Wating'
-          }
-        ]
+        teammate: data.teammate
       }
     )
   )
@@ -69,12 +42,12 @@ export default function Edit() {
       </Head>
       <main >
         <div className={`flex space-x-14 h-screen`}>
-          <Overview />
+          <Overview overview={overview} />
           <div className="pl-56 space-y-5">
             <div className='text-3xl font-semibold text-teal-500'>
               Edit Project
             </div>
-            <Info data={data} />
+            <Info value={value} data={data} />
           </div>
         </div>
       </main>
@@ -84,7 +57,6 @@ export default function Edit() {
 
 export async function getServerSideProps(context) {
   const token = context.req.headers.cookie?.split('token=')[1];
-
   if (!token) {
     return {
       redirect: {
@@ -93,7 +65,33 @@ export async function getServerSideProps(context) {
       }
     }
   }
-  return {
-    props: {}
+
+  const { projectId } = context.query
+  try {
+    const response = await axios.get(`https://api.projectmana.online//api/project/${projectId}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+
+    const res = await axios.get(`https://api.projectmana.online//api/user/projects/count`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+    return {
+      props: {
+        data: response.data,
+        overview: res.data
+      },
+    }
+  } catch (error) {
+    return {
+      props: {
+        error: error.response.data.message,
+      },
+    }
   }
 }

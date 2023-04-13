@@ -31,7 +31,7 @@ export default function Create() {
             <div className='text-3xl font-semibold text-teal-500'>
               Create New Project
             </div>
-            <Info data={data} />
+            <Info value={data} />
           </div>
         </div>
       </main>
