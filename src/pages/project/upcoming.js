@@ -93,21 +93,22 @@ export async function getServerSideProps(context) {
         },
       })
 
-    const list = await axios.get(`https://api.projectmana.online//api/project/list?status=processing`,
-    {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    })
+    // const list = await axios.get(`https://api.projectmana.online//api/project/list?status=processing`,
+    // {
+    //   headers: {
+    //     Authorization: `Bearer ${token}`,
+    //   },
+    // })
 
     return {
       props: {
         overview: res.data,
-        list: list.data.data.projects
+        // list: list.data.data.projects
+        list: []
       }
     }
   } catch (error) {
-    console.log(error.response.data);
+    console.log(error.response);
     return {
       props: {
         error: error.response.data.message,

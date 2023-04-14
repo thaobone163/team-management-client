@@ -188,3 +188,63 @@ export async function getProjectList(name, role, status) {
     })
   return res
 }
+
+// create plan
+export async function createPlan(id, topic, target, stage, note, deadline) {
+  const res = await api.post(`/api/planning/create/${id}`, { topic, target, stage, note, deadline }, await getConfig())
+    .then(response => {
+      return response.data
+    })
+    .catch(error => {
+      return error.response.data
+    })
+  return res
+}
+
+// get plan
+export async function getPlanProject(id) {
+  const res = await api.get(`/api/planning/read/${id}`, await getConfig())
+    .then(response => {
+      return response.data
+    })
+    .catch(error => {
+      return error.response.data
+    })
+  return res
+}
+
+// update plan
+export async function updatePlanProject(id, topic, target, oldStage, newStage, note, deadline) {
+  const res = await api.put(`/api/planning/update/${id}`, { topic, target, oldStage, newStage, note, deadline }, await getConfig())
+    .then(response => {
+      return response.data
+    })
+    .catch(error => {
+      return error.response.data
+    })
+  return res
+}
+
+// delete timeline stage
+export async function deleteStage(id, stage) {
+  const token = Cookies.get('token')
+
+  const res = await api.delete(`/api/planning/delete/${id}`, {
+    headers: {
+      Authorization: `Bearer ${token}`
+    },
+    data:
+    {
+      stage: stage
+    }
+  })
+    .then(response => {
+      return response.data
+    })
+    .catch(error => {
+      return error.response.data
+    })
+
+  console.log(res);
+  return res
+}

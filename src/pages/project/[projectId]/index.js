@@ -1,14 +1,16 @@
 import Detail from "@/components/project/detail/detail";
 import Overview from "@/components/project/overview";
+import { getPlanProject } from "@/util/mics";
 import axios from "axios";
 import Head from "next/head";
 import { useRouter } from "next/router"
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { BiSquareRounded } from 'react-icons/bi'
 
-export default function ProjectDetail({ data, error, overview }) {
+export default function ProjectDetail({ data, error, overview, plan }) {
   const router = useRouter()
   const { projectId } = router.query
+  const [alwayUpdate, setAlwayUpdate] = useState('')
 
   if (error) {
     useEffect(() => {
@@ -19,6 +21,14 @@ export default function ProjectDetail({ data, error, overview }) {
       <></>
     )
   }
+
+  useEffect (() => {
+    getPlanProject(projectId).then((data) => {
+      if(data.success) {
+        setAlwayUpdate(data.plan)
+      }
+    })
+  })
 
   return (
     <>
@@ -39,11 +49,11 @@ export default function ProjectDetail({ data, error, overview }) {
               <div className='w-fit rounded-bl-lg border-l-2 border-b-2 border-gray-300 -mt-1.5 ml-1.5 pl-5 '>
                 <div className="pt-3 pl-1 -mb-3 bg-white flex items-center text-md text-gray-600">
                   <BiSquareRounded className="mr-2 w-3 h-3 text-gray-400" />
-                  Topic
+                  {alwayUpdate.topic}
                 </div>
               </div>
             </div>
-            <Detail data={data} />
+            <Detail data={data} plan={plan} timeline={alwayUpdate.timeline} />
           </div>
         </div>
       </main>
@@ -76,11 +86,18 @@ export async function getServerSideProps(context) {
           Authorization: `Bearer ${token}`,
         },
       })
+    const plan = await axios.get(`https://api.projectmana.online//api/planning/read/${projectId}`,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
 
     return {
       props: {
         data: response.data,
-        overview: res.data
+        overview: res.data,
+        plan: plan.data.plan
       },
     }
   } catch (error) {
