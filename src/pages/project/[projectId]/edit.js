@@ -6,7 +6,7 @@ import Info from '@/components/project/info'
 import { getProjectId } from '@/util/mics'
 import axios from 'axios'
 
-export default function Edit({ data, error, overview }) {
+export default function Edit({ data, error }) {
   const router = useRouter()
   const { projectId } = router.query
 
@@ -42,7 +42,7 @@ export default function Edit({ data, error, overview }) {
       </Head>
       <main >
         <div className={`flex space-x-14 h-screen`}>
-          <Overview overview={overview} />
+          <Overview />
           <div className="pl-56 space-y-5">
             <div className='text-3xl font-semibold text-teal-500'>
               Edit Project
@@ -75,16 +75,9 @@ export async function getServerSideProps(context) {
         },
       })
 
-    const res = await axios.get(`https://api.projectmana.online//api/user/projects/count`,
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      })
     return {
       props: {
-        data: response.data,
-        overview: res.data
+        data: response.data
       },
     }
   } catch (error) {

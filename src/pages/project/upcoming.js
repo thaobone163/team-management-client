@@ -6,7 +6,7 @@ import axios from 'axios'
 import { useRouter } from 'next/router'
 import { getProjectList, getUserByEmail } from '@/util/mics'
 
-export default function Upcoming({ overview, error, list }) {
+export default function Upcoming({error, list}) {
   const router = useRouter()
   if (error) {
     useEffect(() => {
@@ -49,7 +49,7 @@ export default function Upcoming({ overview, error, list }) {
           project: item.name,
           role: item.user.role,
           status: 'Processing',
-          progress: 0.2
+          progress: item.progress
         })
       })
       return data
@@ -65,7 +65,7 @@ export default function Upcoming({ overview, error, list }) {
       </Head>
       <main >
         <div className={`flex space-x-14`}>
-          <Overview overview={overview} />
+          <Overview />
           <List columns={column} data={data} />
         </div>
       </main>
@@ -86,32 +86,28 @@ export async function getServerSideProps(context) {
   }
 
   try {
-    const res = await axios.get(`https://api.projectmana.online//api/user/projects/count`,
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      })
-
-    // const list = await axios.get(`https://api.projectmana.online//api/project/list?status=processing`,
-    // {
-    //   headers: {
-    //     Authorization: `Bearer ${token}`,
-    //   },
-    // })
+    const data = {
+      name: '',
+      role: '',
+      status: 'processing'
+    }
+    const list = await axios.post(`https://api.projectmana.online//api/project/list`, data,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
 
     return {
       props: {
-        overview: res.data,
-        // list: list.data.data.projects
-        list: []
+        list: list.data.projects
       }
     }
   } catch (error) {
-    console.log(error.response);
+    console.log(error);
     return {
       props: {
-        error: error.response.data.message,
+        error: 'error.response.data.message',
       },
     }
   }

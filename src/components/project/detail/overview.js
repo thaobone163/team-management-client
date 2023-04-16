@@ -5,7 +5,7 @@ import { CircularProgressbarWithChildren, CircularProgressbar, buildStyles } fro
 import 'react-circular-progressbar/dist/styles.css';
 import Link from "next/link"
 import { MdOutlineNavigateNext, MdNavigateBefore } from 'react-icons/md'
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { formatToFE } from "@/util/common";
 
 export default function OverviewDetail({ data, timeline }) {
@@ -55,7 +55,11 @@ export default function OverviewDetail({ data, timeline }) {
                       if (value.email === data.user.email) {
                         return (
                           <div key={index} title={data.user.email} className="flex items-center space-x-1.5">
-                            <div className="w-8 h-8 border-2 shadow rounded-full" dangerouslySetInnerHTML={{ __html: identicon(data.user.email) }} />
+                            <img src={
+                              'data:image/svg+xml;utf8,' + encodeURIComponent(identicon(data.user.email))
+                            }
+                              alt={data.user.email}
+                              className="w-8 h-8 border-2 shadow rounded-full" />
                             <div className="flex flex-col text-sm text-gray-700">
                               You
                               <span className="text-gray-500 text-xs">{data.user.role}</span>
@@ -66,7 +70,11 @@ export default function OverviewDetail({ data, timeline }) {
                       return (
                         <div key={index} className="hs-tooltip [--trigger:hover] [--placement:right]">
                           <div className="hs-tooltip-toggle flex items-center space-x-1.5">
-                            <div className="w-8 h-8 border-2 shadow rounded-full" dangerouslySetInnerHTML={{ __html: identicon(value.detail.full_name) }} />
+                            <img src={
+                              'data:image/svg+xml;utf8,' + encodeURIComponent(identicon(value.detail.full_name))
+                            }
+                              alt={value.detail.full_name}
+                              className="w-8 h-8 border-2 shadow rounded-full" />
                             <div className="flex flex-col text-sm text-gray-700">
                               {value.detail.full_name}
                               <span className="text-gray-500 text-xs">{value.role}</span>
@@ -74,7 +82,11 @@ export default function OverviewDetail({ data, timeline }) {
                             <div className="hs-tooltip-content hs-tooltip-shown:opacity-100 hs-tooltip-shown:visible opacity-0 transition-opacity absolute hidden invisible z-50 max-w-xs bg-white border border-gray-100 text-left rounded-lg shadow-md dark:bg-gray-800 dark:border-gray-700" role="tooltip">
                               <div className="flex items-start justify-between p-5">
                                 <div className="flex items-center space-x-3">
-                                  <div className="w-16 h-16 border-2 shadow rounded-full" dangerouslySetInnerHTML={{ __html: identicon(value.detail.full_name) }} />
+                                  <img src={
+                                    'data:image/svg+xml;utf8,' + encodeURIComponent(identicon(value.detail.full_name, 60))
+                                  }
+                                    alt={value.detail.full_name}
+                                    className="w-16 h-16 border-2 shadow rounded-full" />
                                   <div className="flex flex-col text-md text-gray-700">
                                     {value.detail.full_name}
                                     <span className="text-gray-500 text-sm">{value.role}</span>
@@ -154,27 +166,31 @@ export default function OverviewDetail({ data, timeline }) {
             </div>
             <div className="h-[90%] overflow-y-auto mt-3">
               <ol className="mt-5 mx-8 px-4 relative border-l border-gray-200 dark:border-gray-700">
-                {stages.map((item, index) => {
-                  if (item !== undefined) {
-                    const formatToFe = formatToFE(item.deadline)
-                    const date = new Date(formatToFe).toString().split(' ')
-                    const format = date.slice(1, 4).join(' ')
-                    const check = new Date(formatToFe) < new Date()
-                    return (
-                      <li onClick={() => {
-                        formik.setFieldValue('stage', item.stage)
-                        formik.setFieldValue('oldStage', item.stage)
-                        formik.setFieldValue('note', item.note)
-                        formik.setFieldValue('deadline', formatToFe)
-                      }} key={index} className={`${index === timeline.length - 1 ? '' : 'mb-4'} ml-4 cursor-pointer`}>
-                        <div className={`absolute w-3 h-3 ${check ? 'bg-green-200' : 'bg-rose-200 '} rounded-full mt-1.5 -left-1.5 border border-white dark:border-gray-900 dark:bg-gray-700`}></div>
-                        <time className="mb-1 text-sm font-normal leading-none text-gray-400 dark:text-gray-500">{format}</time>
-                        <h3 className="text-md font-semibold text-gray-900 dark:text-white">{item.stage}</h3>
-                        <p className="mb-4 text-sm font-normal text-gray-500 dark:text-gray-400">{item.note}</p>
-                      </li>
-                    )
-                  }
-                })}
+                {
+                  stages.length !== 0
+                    ? stages.map((item, index) => {
+                      if (item !== undefined) {
+                        const formatToFe = formatToFE(item.deadline)
+                        const date = new Date(formatToFe).toString().split(' ')
+                        const format = date.slice(1, 4).join(' ')
+                        const check = new Date(formatToFe) < new Date()
+                        return (
+                          <li onClick={() => {
+                            formik.setFieldValue('stage', item.stage)
+                            formik.setFieldValue('oldStage', item.stage)
+                            formik.setFieldValue('note', item.note)
+                            formik.setFieldValue('deadline', formatToFe)
+                          }} key={index} className={`${index === timeline.length - 1 ? '' : 'mb-4'} ml-4 cursor-pointer`}>
+                            <div className={`absolute w-3 h-3 ${check ? 'bg-green-200' : 'bg-rose-200 '} rounded-full mt-1.5 -left-1.5 border border-white dark:border-gray-900 dark:bg-gray-700`}></div>
+                            <time className="mb-1 text-sm font-normal leading-none text-gray-400 dark:text-gray-500">{format}</time>
+                            <h3 className="text-md font-semibold text-gray-900 dark:text-white">{item.stage}</h3>
+                            <p className="mb-4 text-sm font-normal text-gray-500 dark:text-gray-400">{item.note}</p>
+                          </li>
+                        )
+                      }
+                    })
+                    : <div className="text-gray-600 text-sm italic">No timeline data yet!</div>
+                }
               </ol>
             </div>
           </div>

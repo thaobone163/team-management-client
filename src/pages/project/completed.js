@@ -5,7 +5,7 @@ import List from '@/components/project/list'
 import axios from 'axios'
 import { useRouter } from 'next/router'
 
-export default function Completed({overview, error}) {
+export default function Completed({ error, list }) {
   const router = useRouter()
   if (error) {
     useEffect(() => {
@@ -39,68 +39,19 @@ export default function Completed({overview, error}) {
   )
 
   const data = React.useMemo(
-    () => [
-      {
-        project: 'Completed Project 1',
-        role: 'Member',
-        status: 'Completed',
-        progress: 1
-      },
-      {
-        project: 'Completed Project 2',
-        role: 'Member',
-        status: 'Completed',
-        progress: 1
-      },
-      {
-        project: 'Completed Project 3',
-        role: 'Leader',
-        status: 'Completed',
-        progress: 1
-      },
-      {
-        project: 'Completed Project 4',
-        role: 'Reviewer',
-        status: 'Completed',
-        progress: 1
-      },
-      {
-        project: 'Completed Project 5',
-        role: 'Member',
-        status: 'Completed',
-        progress: 1
-      },
-      {
-        project: 'Completed Project 6',
-        role: 'Leader',
-        status: 'Completed',
-        progress: 1
-      },
-      {
-        project: 'Completed Project 7',
-        role: 'Leader',
-        status: 'Completed',
-        progress: 1
-      },
-      {
-        project: 'Completed Project 8',
-        role: 'Reviewer',
-        status: 'Completed',
-        progress: 1
-      },
-      {
-        project: 'Completed Project 9',
-        role: 'Member',
-        status: 'Completed',
-        progress: 1
-      },
-      {
-        project: 'Completed Project 10',
-        role: 'Leader',
-        status: 'Completed',
-        progress: 1
-      }
-    ],
+    () => {
+      const data = []
+      list.map((item) => {
+        data.push({
+          id: item.id,
+          project: item.name,
+          role: item.user.role,
+          status: 'Completed',
+          progress: item.progress
+        })
+      })
+      return data
+    },
     []
   )
 
@@ -111,8 +62,8 @@ export default function Completed({overview, error}) {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main >
-        <div className='flex space-x-12 h-screen'>
-          <Overview overview={overview} />
+        <div className='flex space-x-12'>
+          <Overview />
           <List columns={column} data={data} />
         </div>
       </main>
@@ -133,15 +84,21 @@ export async function getServerSideProps(context) {
   }
 
   try {
-    const res = await axios.get(`https://api.projectmana.online//api/user/projects/count`,
+    const data = {
+      name: '',
+      role: '',
+      status: 'completed'
+    }
+    const list = await axios.post(`https://api.projectmana.online//api/project/list`, data,
       {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       })
+
     return {
       props: {
-        overview: res.data
+        list: list.data.projects
       }
     }
   } catch (error) {

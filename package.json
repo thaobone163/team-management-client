@@ -29,9 +29,9 @@
     "react-icons": "4.8.0",
     "react-table": "7.8.0",
     "tw-elements": "1.0.0-beta1",
-    "minidenticons":"2.0.2",
-    "react-circular-progressbar":"2.1.0",
-    "preline":"1.8.0"
+    "minidenticons": "2.0.2",
+    "react-circular-progressbar": "2.1.0",
+    "preline": "1.8.0"
   },
   "devDependencies": {
     "autoprefixer": "^10.4.13",

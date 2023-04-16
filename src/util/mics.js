@@ -172,14 +172,14 @@ export async function getProjectOverview() {
       return response.data
     })
     .catch(error => {
-      return error.response.data
+      return error.response
     })
   return res
 }
 
 // get project list
 export async function getProjectList(name, role, status) {
-  const res = await api.get(`/api/project/list?name=${name}&role=${role}&status=${status}`, await getConfig())
+  const res = await api.post(`/api/project/list`, { name, role, status }, await getConfig())
     .then(response => {
       return response.data
     })
@@ -246,5 +246,41 @@ export async function deleteStage(id, stage) {
     })
 
   console.log(res);
+  return res
+}
+
+// get invitation list
+export async function invitationList(project_name, role) {
+  const res = await api.post(`/api/user/invitations/list`, { project_name, role }, await getConfig())
+    .then(response => {
+      return response.data
+    })
+    .catch(error => {
+      return error.response.data
+    })
+  return res
+}
+
+// accept invitation
+export async function acceptInvitation(id, accept) {
+  const res = await api.put(`/api/user/${id}/invite/respond`, { accept }, await getConfig())
+    .then(response => {
+      return response.data
+    })
+    .catch(error => {
+      return error.response.data
+    })
+  return res
+}
+
+// deny invitation
+export async function denyInvitation(id) {
+  const res = await api.put(`/api/user/outproject/${id}`, {}, await getConfig())
+    .then(response => {
+      return response.data
+    })
+    .catch(error => {
+      return error.response.data
+    })
   return res
 }

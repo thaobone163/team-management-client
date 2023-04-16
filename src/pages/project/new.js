@@ -2,8 +2,21 @@ import Head from 'next/head'
 import Overview from '@/components/project/overview'
 import React from 'react'
 import Info from "@/components/project/info";
+import { useRouter } from 'next/router';
+import axios from 'axios';
 
-export default function Create() {
+export default function Create({ error }) {
+  const router = useRouter()
+  if (error) {
+    useEffect(() => {
+      alert(error)
+      router.reload()
+    })
+    return (
+      <></>
+    )
+  }
+
   const data = React.useMemo(
     () => (
       {
@@ -50,6 +63,7 @@ export async function getServerSideProps(context) {
       }
     }
   }
+
   return {
     props: {}
   }
