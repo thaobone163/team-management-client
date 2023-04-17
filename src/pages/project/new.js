@@ -5,17 +5,8 @@ import Info from "@/components/project/info";
 import { useRouter } from 'next/router';
 import axios from 'axios';
 
-export default function Create({ error }) {
+export default function Create() {
   const router = useRouter()
-  if (error) {
-    useEffect(() => {
-      alert(error)
-      router.reload()
-    })
-    return (
-      <></>
-    )
-  }
 
   const data = React.useMemo(
     () => (

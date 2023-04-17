@@ -8,13 +8,23 @@ import { getProjectList, getUserByEmail } from '@/util/mics'
 
 export default function Upcoming({error, list}) {
   const router = useRouter()
+
   if (error) {
-    useEffect(() => {
-      alert(error)
-      router.reload()
-    })
     return (
-      <></>
+      <>
+        <Head>
+          <title>Pending Project</title>
+          <link rel="icon" href="/favicon.ico" />
+        </Head>
+        <main >
+          <div className='flex space-x-12'>
+            <Overview />
+            <div className='pt-10 w-[90%] text-center text-gray-500'>
+              {error}
+            </div>
+          </div>
+        </main>
+      </>
     )
   }
 
