@@ -11,6 +11,13 @@ export default function ProjectDetail({ data, error, plan }) {
   const router = useRouter()
   const { projectId } = router.query
   const [alwayUpdate, setAlwayUpdate] = useState('')
+  useEffect(() => {
+    getPlanProject(projectId).then((data) => {
+      if (data.success) {
+        setAlwayUpdate(data.plan)
+      }
+    })
+  })
 
   if (error) {
     return (
@@ -30,14 +37,6 @@ export default function ProjectDetail({ data, error, plan }) {
       </>
     )
   }
-
-  useEffect(() => {
-    getPlanProject(projectId).then((data) => {
-      if (data.success) {
-        setAlwayUpdate(data.plan)
-      }
-    })
-  })
 
   function leaveProject() {
     denyInvitation(projectId).then((data) => {
@@ -90,7 +89,7 @@ export default function ProjectDetail({ data, error, plan }) {
                     </div>
                     <div class="p-4 overflow-y-auto">
                       <p class="text-gray-800 dark:text-gray-400">
-                        If you select 'Leave' , you will no longer have access to this project! <br/><br/>
+                        If you select `&apos;`Leave`&apos;` , you will no longer have access to this project! <br /><br />
                         <span className="font-medium">Are you sure leave this project?</span>
                       </p>
                     </div>

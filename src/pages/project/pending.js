@@ -10,24 +10,6 @@ const inter = Inter({ subsets: ['latin'] })
 
 export default function Pending({ error, list }) {
   const router = useRouter()
-  if (error) {
-    return (
-      <>
-        <Head>
-          <title>Pending Project</title>
-          <link rel="icon" href="/favicon.ico" />
-        </Head>
-        <main >
-          <div className='flex space-x-12'>
-            <Overview />
-            <div className='pt-10 w-[90%] text-center text-gray-500'>
-              {error}
-            </div>
-          </div>
-        </main>
-      </>
-    )
-  }
 
   const column = React.useMemo(
     () => [
@@ -66,6 +48,25 @@ export default function Pending({ error, list }) {
     },
     []
   )
+
+  if (error) {
+    return (
+      <>
+        <Head>
+          <title>Pending Project</title>
+          <link rel="icon" href="/favicon.ico" />
+        </Head>
+        <main >
+          <div className='flex space-x-12'>
+            <Overview />
+            <div className='pt-10 w-[90%] text-center text-gray-500'>
+              {error}
+            </div>
+          </div>
+        </main>
+      </>
+    )
+  }
 
   return (
     <>

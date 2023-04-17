@@ -10,6 +10,20 @@ export default function Edit({ data, error }) {
   const router = useRouter()
   const { projectId } = router.query
 
+  const value = React.useMemo(
+    () => (
+      {
+        project_name: data.project_name,
+        description: data.project_description,
+        user: {
+          email: '',
+          role: data.user.role
+        },
+        teammate: data.teammate
+      }
+    ), []
+  )
+
   if (error) {
     return (
       <>
@@ -28,20 +42,6 @@ export default function Edit({ data, error }) {
       </>
     )
   }
-
-  const value = React.useMemo(
-    () => (
-      {
-        project_name: data.project_name,
-        description: data.project_description,
-        user: {
-          email: '',
-          role: data.user.role
-        },
-        teammate: data.teammate
-      }
-    )
-  )
 
   return (
     <>
