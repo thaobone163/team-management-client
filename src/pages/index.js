@@ -1,5 +1,5 @@
-import NavBar from '@/components/navbar';
-import SideBar from '@/components/sidebar';
+import NavBar from '@/components/Navbar';
+import SideBar from '@/components/Sidebar';
 import { getUser } from '@/util/mics';
 import { Inter } from '@next/font/google'
 import Cookies from 'js-cookie';

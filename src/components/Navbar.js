@@ -16,7 +16,7 @@ export default function NavBar() {
         const token = Cookies.get('token')
         const decoded = jwt_decode(token)
         setUser(decoded.userFullname)
-    })
+    },[])
 
     function handleSignOut() {
         Cookies.remove('token')

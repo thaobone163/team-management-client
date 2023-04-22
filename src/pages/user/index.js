@@ -1,10 +1,10 @@
 import Head from 'next/head'
 import { Inter } from '@next/font/google'
-import SideBar from '@/components/sidebar'
-import NavBar from '@/components/navbar'
+import SideBar from '@/components/Sidebar'
+import NavBar from '@/components/Navbar'
 import { useRouter } from 'next/router'
-import Profile from '@/components/user/profile'
-import Password from '@/components/user/password'
+import Profile from '@/components/user/Profile'
+import Password from '@/components/user/Password'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -30,7 +30,7 @@ export default function User() {
 
 export async function getServerSideProps(context) {
     const token = context.req.headers.cookie?.split('token=')[1];
-  
+
     if (!token) {
       return {
         redirect: {

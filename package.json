@@ -21,17 +21,20 @@
     "js-cookie": "3.0.1",
     "jsonwebtoken": "9.0.0",
     "jwt-decode": "3.1.2",
+    "minidenticons": "2.0.2",
     "next": "13.1.6",
     "next-auth": "4.20.1",
     "nodemailer": "6.9.1",
+    "preline": "1.8.0",
     "react": "18.2.0",
+    "react-circular-progressbar": "2.1.0",
     "react-dom": "18.2.0",
     "react-icons": "4.8.0",
     "react-table": "7.8.0",
     "tw-elements": "1.0.0-beta1",
-    "minidenticons": "2.0.2",
-    "react-circular-progressbar": "2.1.0",
-    "preline": "1.8.0"
+    "react-dnd":"16.0.1",
+    "react-dnd-html5-backend": "16.0.1",
+    "immutability-helper":"3.1.1"
   },
   "devDependencies": {
     "autoprefixer": "^10.4.13",

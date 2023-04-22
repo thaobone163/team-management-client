@@ -1,7 +1,7 @@
 import Head from 'next/head'
-import Overview from '@/components/project/overview'
+import Overview from '@/components/project/Overview'
 import React from 'react'
-import Info from "@/components/project/info";
+import Info from "@/components/project/Info";
 import { useRouter } from 'next/router';
 import axios from 'axios';
 

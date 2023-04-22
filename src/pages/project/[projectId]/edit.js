@@ -1,8 +1,8 @@
 import Head from 'next/head'
-import Overview from '@/components/project/overview'
+import Overview from '@/components/project/Overview'
 import React, { useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
-import Info from '@/components/project/info'
+import Info from '@/components/project/Info'
 import { getProjectId } from '@/util/mics'
 import axios from 'axios'
 

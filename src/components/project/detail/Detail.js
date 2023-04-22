@@ -1,9 +1,13 @@
 import { useState } from "react";
-import OverviewDetail from "./overview";
-import Planning from "./planning";
+import OverviewDetail from "./Overview";
+import Planning from "./Planning";
+import Task from "@/components/task/Task";
+import { useRouter } from "next/router";
 
 export default function Detail({ data, plan, timeline }) {
   const [openTab, setOpenTab] = useState('Overview');
+  const router = useRouter()
+  const {projectId} = router.query
 
   return (
     <>
@@ -24,6 +28,7 @@ export default function Detail({ data, plan, timeline }) {
                 onClick={e => {
                   e.preventDefault();
                   setOpenTab('Overview');
+                  router.push(`${projectId}?tab=overview`)
                 }}
                 data-toggle="tab"
                 href="#overview"
@@ -43,6 +48,7 @@ export default function Detail({ data, plan, timeline }) {
                 onClick={e => {
                   e.preventDefault();
                   setOpenTab('Planning');
+                  router.push(`${projectId}?tab=planning`)
                 }}
                 data-toggle="tab"
                 href="#planning"
@@ -62,6 +68,7 @@ export default function Detail({ data, plan, timeline }) {
                 onClick={e => {
                   e.preventDefault();
                   setOpenTab('Tasks');
+                  router.push(`${projectId}?tab=tasks`)
                 }}
                 data-toggle="tab"
                 href="#tasks"
@@ -81,6 +88,7 @@ export default function Detail({ data, plan, timeline }) {
                 onClick={e => {
                   e.preventDefault();
                   setOpenTab('Document');
+                  router.push(`${projectId}?tab=document`)
                 }}
                 data-toggle="tab"
                 href="#document"
@@ -100,6 +108,7 @@ export default function Detail({ data, plan, timeline }) {
                 onClick={e => {
                   e.preventDefault();
                   setOpenTab('Statistic');
+                  router.push(`${projectId}?tab=statistic`)
                 }}
                 data-toggle="tab"
                 href="#statistic"
@@ -116,7 +125,10 @@ export default function Detail({ data, plan, timeline }) {
                   <OverviewDetail data={data} timeline={timeline} />
                 </div>
                 <div className={openTab === 'Planning' ? "block" : "hidden"} id="planning">
-                  <Planning plan={plan} />
+                  <Planning plan={plan} role={data.user.role} />
+                </div>
+                <div className={openTab === 'Tasks' ? "block" : "hidden"} id="tasks">
+                  <Task />
                 </div>
               </div>
             </div>

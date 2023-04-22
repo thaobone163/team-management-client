@@ -164,7 +164,7 @@ export default function OverviewDetail({ data, timeline }) {
             <div className="text-md uppercase font-semibold text-cyan-600">
               Timeline
             </div>
-            <div className="h-[90%] overflow-y-auto mt-3">
+            <div className="max-h-[300px] overflow-y-auto mt-3">
               <ol className="mt-5 mx-8 px-4 relative border-l border-gray-200 dark:border-gray-700">
                 {
                   stages.length !== 0

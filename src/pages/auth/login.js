@@ -1,7 +1,7 @@
 import Head from 'next/head'
 import React, { useEffect, useState } from 'react';
 import { Inter } from '@next/font/google'
-import Poster from '@/components/poster';
+import Poster from '@/components/Poster';
 import Link from 'next/link';
 import { login, loginGoogle } from '@/util/mics';
 import { useRouter } from 'next/router';

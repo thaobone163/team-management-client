@@ -8,19 +8,24 @@ import { useEffect, useState } from "react";
 import { createPlan, deleteStage, getPlanProject, updatePlanProject } from "@/util/mics";
 import { formatToBE, formatToFE } from "@/util/common";
 
-export default function Planning({ plan }) {
+export default function Planning({ plan, role }) {
+  const isDisable = (role !== 'Leader')
   const router = useRouter()
-  const [action, setAction] = useState()
+  const [action, setAction] = useState('')
   const { projectId } = router.query
   const [timeline, setTimeline] = useState([])
 
-  useEffect(() => {
-    getPlanProject(projectId).then((data) => {
+  async function update() {
+    await getPlanProject(projectId).then((data) => {
       if (data.success) {
         setTimeline(data.plan.timeline)
       }
     })
-  })
+  }
+
+  useEffect(() => {
+    update()
+  }, [])
 
   const formik = useFormik({
     initialValues: {
@@ -46,6 +51,7 @@ export default function Planning({ plan }) {
           formik.setFieldValue('oldStage', '')
           formik.setFieldValue('note', '')
           formik.setFieldValue('deadline', '')
+          update()
         }
       })
     } else if (action === 'Edit') {
@@ -60,6 +66,7 @@ export default function Planning({ plan }) {
           formik.setFieldValue('oldStage', '')
           formik.setFieldValue('note', '')
           formik.setFieldValue('deadline', '')
+          update()
         }
       })
     } else if (action === 'Remove') {
@@ -71,6 +78,7 @@ export default function Planning({ plan }) {
           formik.setFieldValue('oldStage', '')
           formik.setFieldValue('note', '')
           formik.setFieldValue('deadline', '')
+          update()
         }
       })
     }
@@ -89,6 +97,7 @@ export default function Planning({ plan }) {
                 </label>
                 <input type='text'
                   id='topic'
+                  disabled={isDisable}
                   className='mt-2 border border-sky-500 text-gray-900 text-sm rounded-lg w-full p-4 focus:ring-0 focus:border-sky-500'
                   value={formik.values.topic}
                   onChange={formik.handleChange}
@@ -102,6 +111,7 @@ export default function Planning({ plan }) {
                 </label>
                 <textarea type='text'
                   id='target'
+                  disabled={isDisable}
                   className='mt-2 border border-sky-500 text-gray-900 text-sm rounded-lg w-full h-fit p-4 focus:ring-0 focus:border-sky-500'
                   value={formik.values.target}
                   onChange={formik.handleChange}
@@ -118,6 +128,7 @@ export default function Planning({ plan }) {
                   </label>
                   <input type='text'
                     id='stage'
+                    disabled={isDisable}
                     className='mt-2 border border-sky-500 text-gray-900 text-sm rounded-lg w-full p-4 focus:ring-0 focus:border-sky-500'
                     value={formik.values.stage}
                     onChange={formik.handleChange}
@@ -131,6 +142,7 @@ export default function Planning({ plan }) {
                   </label>
                   <input type='text'
                     id='note'
+                    disabled={isDisable}
                     className='mt-2 border border-sky-500 text-gray-900 text-sm rounded-lg w-full p-4 focus:ring-0 focus:border-sky-500'
                     value={formik.values.note}
                     onChange={formik.handleChange}
@@ -144,6 +156,7 @@ export default function Planning({ plan }) {
                   </label>
                   <input type='date'
                     id='deadline'
+                    disabled={isDisable}
                     className='mt-2 border border-sky-500 text-gray-900 text-sm rounded-lg w-full p-4 focus:ring-0 focus:border-sky-500'
                     value={formik.values.deadline}
                     onChange={formik.handleChange}
@@ -151,14 +164,14 @@ export default function Planning({ plan }) {
                 </div>
               </div>
               <div className="flex justify-around pt-5">
-                <button type="submit" onClick={() => { setAction('Add') }} className="bg-sky-500 text-white text-sm font-medium shadow rounded-md py-1.5 px-2">
+                <button disabled={isDisable} type="submit" onClick={() => { setAction('Add') }} className="bg-sky-500 text-white text-sm font-medium shadow rounded-md py-1.5 px-2">
                   + Add
                 </button>
-                <button type="submit" onClick={() => { setAction('Edit') }} className="flex items-center bg-emerald-600 text-white text-sm font-medium shadow rounded-md py-1.5 px-2">
+                <button disabled={isDisable} type="submit" onClick={() => { setAction('Edit') }} className="flex items-center bg-emerald-600 text-white text-sm font-medium shadow rounded-md py-1.5 px-2">
                   <TfiPencil className="mr-1.5" />
                   Edit
                 </button>
-                <button type="submit" onClick={() => { setAction('Remove') }} className="flex items-center bg-rose-500 text-white text-sm font-medium shadow rounded-md py-1.5 px-2">
+                <button disabled={isDisable} type="submit" onClick={() => { setAction('Remove') }} className="flex items-center bg-rose-500 text-white text-sm font-medium shadow rounded-md py-1.5 px-2">
                   <MdOutlineDeleteOutline className="mr-1.5 w-5 h-5" />
                   Remove
                 </button>
@@ -167,7 +180,7 @@ export default function Planning({ plan }) {
           </div>
         </div>
         <div className="flex flex-col w-[48%]">
-          <div className="h-[96%] overflow-y-auto flex flex-col bg-white p-5 shadow rounded-md">
+          <div className="max-h-[529px] overflow-y-auto flex flex-col bg-white p-5 shadow rounded-md">
             <div className="text-xl uppercase font-semibold text-cyan-600">
               Timeline
             </div>

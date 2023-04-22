@@ -20,7 +20,7 @@ export default function Info({ value, data }) {
     const token = Cookies.get('token')
     const decoded = jwt_decode(token)
     setEmail(decoded.userEmail)
-  })
+  },[])
 
   function toggleDisable() {
     setIsDisable(!isDisable)

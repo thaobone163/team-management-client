@@ -1,7 +1,7 @@
 import Head from 'next/head'
-import Overview from '@/components/project/overview'
+import Overview from '@/components/project/Overview'
 import React from 'react'
-import List from '@/components/project/list'
+import List from '@/components/project/List'
 import axios from 'axios'
 import { useRouter } from 'next/router'
 

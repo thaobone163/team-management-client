@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import NavBar from './navbar';
-import SideBar from './sidebar';
+import NavBar from './Navbar';
+import SideBar from './Sidebar';
 import Cookies from 'js-cookie';
 import { useRouter } from 'next/router';
 
