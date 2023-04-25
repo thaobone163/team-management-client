@@ -56,7 +56,7 @@ export default function OverviewDetail({ data, timeline }) {
                         return (
                           <div key={index} title={data.user.email} className="flex items-center space-x-1.5">
                             <img src={
-                              'data:image/svg+xml;utf8,' + encodeURIComponent(identicon(data.user.email))
+                              'data:image/svg+xml;utf8,' + encodeURIComponent(identicon(data.user.email.replace('@', '')))
                             }
                               alt={data.user.email}
                               className="w-8 h-8 border-2 shadow rounded-full" />
@@ -71,7 +71,7 @@ export default function OverviewDetail({ data, timeline }) {
                         <div key={index} className="hs-tooltip [--trigger:hover] [--placement:right]">
                           <div className="hs-tooltip-toggle flex items-center space-x-1.5">
                             <img src={
-                              'data:image/svg+xml;utf8,' + encodeURIComponent(identicon(value.detail.full_name))
+                              'data:image/svg+xml;utf8,' + encodeURIComponent(identicon(value.email.replace('@', '')))
                             }
                               alt={value.detail.full_name}
                               className="w-8 h-8 border-2 shadow rounded-full" />
@@ -83,7 +83,7 @@ export default function OverviewDetail({ data, timeline }) {
                               <div className="flex items-start justify-between p-5">
                                 <div className="flex items-center space-x-3">
                                   <img src={
-                                    'data:image/svg+xml;utf8,' + encodeURIComponent(identicon(value.detail.full_name, 60))
+                                    'data:image/svg+xml;utf8,' + encodeURIComponent(identicon(value.email.replace('@', ''), 60))
                                   }
                                     alt={value.detail.full_name}
                                     className="w-16 h-16 border-2 shadow rounded-full" />

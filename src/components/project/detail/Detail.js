@@ -128,7 +128,7 @@ export default function Detail({ data, plan, timeline }) {
                   <Planning plan={plan} role={data.user.role} />
                 </div>
                 <div className={openTab === 'Tasks' ? "block" : "hidden"} id="tasks">
-                  <Task />
+                  <Task project_data={data}/>
                 </div>
               </div>
             </div>
