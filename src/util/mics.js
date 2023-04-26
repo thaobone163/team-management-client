@@ -284,3 +284,15 @@ export async function denyInvitation(id) {
     })
   return res
 }
+
+// create task
+export async function createTask(stage, title, project, description, assign, duedate, estimate, tags) {
+  const res = await api.post(`/api/task/create`, { stage, title, project, description, assign, duedate, estimate, tags }, await getConfig())
+    .then(response => {
+      return response.data
+    })
+    .catch(error => {
+      return error.response.data
+    })
+  return res
+}

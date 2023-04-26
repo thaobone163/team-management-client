@@ -1,12 +1,14 @@
-import { getUserByEmail } from "@/util/mics";
+import { createTask, getUserByEmail } from "@/util/mics";
 import { useFormik } from "formik";
 import { useEffect, useState } from "react";
 import { TiDelete } from 'react-icons/ti'
-import { identicon } from 'minidenticons'
 import { AiOutlineFieldTime } from 'react-icons/ai'
+import { formatToBE } from "@/util/common";
+import { actions } from "react-table";
 
-export default function AddTask({ project_id, project_name, user, other_member }) {
+export default function AddTask({ project_id, project_name, user, other_member, timeline }) {
   const [creator, setCreator] = useState('')
+  const [result, setResult] = useState({ isHidden: true, success: '', message: '' })
 
   useEffect(() => {
     getUserByEmail(user.email).then((data) => {
@@ -30,21 +32,89 @@ export default function AddTask({ project_id, project_name, user, other_member }
       title: '',
       project: project_id,
       description: '',
+      stage: '',
       assign: '',
       duedate: '',
       estimate: '',
-      tags: ['#tag1', '#tag2']
+      tags: []
     },
     onSubmit: handleAdd,
+    onReset: reset,
     validate
   });
 
-  async function handleAdd(values) {
-    console.log(values);
+  function reset() {
+    setResult({isHidden: true})
+    formik.setValues({
+      title: '',
+      project: project_id,
+      description: '',
+      stage: '',
+      assign: '',
+      duedate: '',
+      estimate: '',
+      tags: []
+    }
+    )
+  }
+
+  async function handleAdd(values, actions) {
+    const duedate = formatToBE(values.duedate)
+    createTask(values.stage, values.title, values.project, values.description, values.assign, duedate, values.estimate, values.tags).then((data) => {
+      setResult({
+        isHidden: false,
+        success: data.success,
+        message: data.message
+      })
+      if (data.success) {
+        actions.resetForm({
+          values: {
+            title: '',
+            project: project_id,
+            description: '',
+            stage: '',
+            assign: '',
+            duedate: '',
+            estimate: '',
+            tags: []
+          }
+        })
+      }
+    })
   }
 
   return (
     <>
+      <div hidden={result.isHidden} id="dismiss-alert" className={`hs-removing:translate-x-5 hs-removing:opacity-0 transition duration-300 border m-auto ${result.success ? 'bg-teal-50 border-teal-200' : 'bg-rose-50 border-rose-200'} rounded-md p-4`} role="alert">
+        <div className="flex">
+          <div className="flex-shrink-0">
+            <svg className={`h-4 w-4 ${result.success ? 'text-teal-400' : 'text-rose-400'} mt-0.5`} xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+              <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z" />
+            </svg>
+          </div>
+          <div className="ml-3">
+            <div className={`text-sm ${result.success ? 'text-teal-800' : 'text-rose-800'} font-medium`}>
+              {result.message}
+            </div>
+          </div>
+          <div className="pl-3 ml-auto">
+            <div className="-mx-1.5 -my-1.5">
+              <button onClick={() => {
+                const hidden = result.isHidden
+                setResult({
+                  isHidden: !hidden
+                })
+              }}
+                type="button" className={`inline-flex rounded-md p-1.5 focus:outline-none focus:ring-2 focus:ring-offset-2 ${result.success ? 'bg-teal-50 text-teal-500 hover:bg-teal-100  focus:ring-offset-teal-50 focus:ring-teal-600' : 'bg-rose-50 text-rose-500 hover:bg-rose-100  focus:ring-offset-rose-50 focus:ring-rose-600'}`}>
+                <span className="sr-only">Dismiss</span>
+                <svg className="h-3 w-3" width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                  <path d="M0.92524 0.687069C1.126 0.486219 1.39823 0.373377 1.68209 0.373377C1.96597 0.373377 2.2382 0.486219 2.43894 0.687069L8.10514 6.35813L13.7714 0.687069C13.8701 0.584748 13.9882 0.503105 14.1188 0.446962C14.2494 0.39082 14.3899 0.361248 14.5321 0.360026C14.6742 0.358783 14.8151 0.38589 14.9468 0.439762C15.0782 0.493633 15.1977 0.573197 15.2983 0.673783C15.3987 0.774389 15.4784 0.894026 15.5321 1.02568C15.5859 1.15736 15.6131 1.29845 15.6118 1.44071C15.6105 1.58297 15.5809 1.72357 15.5248 1.85428C15.4688 1.98499 15.3872 2.10324 15.2851 2.20206L9.61883 7.87312L15.2851 13.5441C15.4801 13.7462 15.588 14.0168 15.5854 14.2977C15.5831 14.5787 15.4705 14.8474 15.272 15.046C15.0735 15.2449 14.805 15.3574 14.5244 15.3599C14.2437 15.3623 13.9733 15.2543 13.7714 15.0591L8.10514 9.38812L2.43894 15.0591C2.23704 15.2543 1.96663 15.3623 1.68594 15.3599C1.40526 15.3574 1.13677 15.2449 0.938279 15.046C0.739807 14.8474 0.627232 14.5787 0.624791 14.2977C0.62235 14.0168 0.730236 13.7462 0.92524 13.5441L6.59144 7.87312L0.92524 2.20206C0.724562 2.00115 0.611816 1.72867 0.611816 1.44457C0.611816 1.16047 0.724562 0.887983 0.92524 0.687069Z" fill="currentColor" />
+                </svg>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
       <div className="hs-overlay-open:mt-7 hs-overlay-open:opacity-100 hs-overlay-open:duration-500 mt-0 opacity-0 ease-out transition-all sm:max-w-lg sm:w-full m-3 sm:mx-auto">
         <div className="flex flex-col bg-white border shadow-sm rounded-xl dark:bg-gray-800 dark:border-gray-700 dark:shadow-slate-700/[.7]">
           <div className="flex justify-between items-center py-3 px-4 border-b dark:border-gray-700">
@@ -58,8 +128,8 @@ export default function AddTask({ project_id, project_name, user, other_member }
               </svg>
             </button>
           </div>
-          <div className="p-5 h-[450px] overflow-y-auto">
-            <form onSubmit={formik.handleSubmit} className="space-y-4">
+          <form onSubmit={formik.handleSubmit} onReset={formik.handleReset}>
+            <div className="p-5 space-y-4 h-[450px] overflow-y-auto">
               <div className="flex justify-between">
                 <div className="relative">
                   <label htmlFor='project'
@@ -138,33 +208,56 @@ export default function AddTask({ project_id, project_name, user, other_member }
                       if (e.key === 'Enter') {
                         formik.setFieldValue('tags', [...formik.values.tags, e.target.value])
                         e.target.value = ''
+                        e.preventDefault()
                       }
                     }}
                   />
                 </div>
               </div>
-              <div className="relative">
-                <label htmlFor='assign'
-                  className='absolute ml-2.5 px-2 bg-white text-md font-medium text-sky-500'>
-                  Assign
-                </label>
-                <select
-                  id='assign'
-                  className='shadow mt-3 border border-sky-500 text-gray-900 text-sm rounded-lg w-full py-3 px-4 focus:ring-0 focus:border-sky-500'
-                  value={formik.values.assign}
-                  onChange={formik.handleChange}
-                  required
-                >
-                  <option>Select member</option>
-                  <option value={user.email}                  >
-                    {creator} ({user.email})
-                  </option>
-                  {other_member.map((member) => (
-                    <option key={member.email} value={member.email}>
-                      {member.detail.full_name} ({member.email})
+              <div className="flex justify-between">
+                <div className="relative w-[30%]">
+                  <label htmlFor='stage'
+                    className='absolute ml-2.5 px-2 bg-white text-md font-medium text-sky-500'>
+                    Stage
+                  </label>
+                  <select
+                    id='stage'
+                    className='shadow mt-3 border border-sky-500 text-gray-900 text-sm rounded-lg w-full py-3 px-4 focus:ring-0 focus:border-sky-500'
+                    value={formik.values.stage}
+                    onChange={formik.handleChange}
+                    required
+                  >
+                    <option value={''}>Select stage</option>
+                    {timeline.map((item) => (
+                      <option key={item.stage} value={item.stage}>
+                        {item.stage}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+                <div className="relative w-[66.5%]">
+                  <label htmlFor='assign'
+                    className='absolute ml-2.5 px-2 bg-white text-md font-medium text-sky-500'>
+                    Assign
+                  </label>
+                  <select
+                    id='assign'
+                    required
+                    className='shadow mt-3 border border-sky-500 text-gray-900 text-sm rounded-lg w-full py-3 px-4 focus:ring-0 focus:border-sky-500'
+                    value={formik.values.assign}
+                    onChange={formik.handleChange}
+                  >
+                    <option value={''}>Select member</option>
+                    <option value={user.email}                  >
+                      {creator} ({user.email})
                     </option>
-                  ))}
-                </select>
+                    {other_member.map((member) => (
+                      <option key={member.email} value={member.email}>
+                        {member.detail.full_name} ({member.email})
+                      </option>
+                    ))}
+                  </select>
+                </div>
               </div>
               <div className="flex justify-between">
                 <div className="relative">
@@ -177,6 +270,7 @@ export default function AddTask({ project_id, project_name, user, other_member }
                     className='shadow mt-3 border border-sky-500 text-gray-900 text-sm rounded-lg py-3 pl-4 pr-3 focus:ring-0 focus:border-sky-500'
                     value={formik.values.duedate}
                     onChange={formik.handleChange}
+                    required
                   />
                 </div>
                 <div className="relative">
@@ -184,17 +278,18 @@ export default function AddTask({ project_id, project_name, user, other_member }
                     className='absolute ml-2.5 px-2 bg-white text-md font-medium text-sky-500'>
                     Estimate
                   </label>
-                  <div className="mt-3 pr-4 flex items-center">
+                  <div className="mt-3 flex items-center">
                     <input type='text'
                       id='estimate'
-                      className='shadow border border-sky-500 text-gray-900 text-sm rounded-lg py-3 pl-4 pr-12 focus:ring-0 focus:border-sky-500'
+                      className=' w-[284px] shadow border border-sky-500 text-gray-900 text-sm rounded-lg py-3 pl-4 pr-12 focus:ring-0 focus:border-sky-500'
                       placeholder="ex: 1h 30m"
                       value={formik.values.estimate}
                       onChange={formik.handleChange}
+                      required
                     />
-                    <div className="-ml-10 hs-tooltip inline-block [--trigger:hover] relative">
-                      <AiOutlineFieldTime className="hs-tooltip-toggle block text-center w-6 h-6 text-gray-600" />
-                      <div className="hs-tooltip-content hs-tooltip-shown:opacity-100 hs-tooltip-shown:visible opacity-0 transition-opacity inline-block absolute invisible z-10 py-3 px-4 bg-white border text-sm text-gray-600 rounded-md max-w-sm shadow-md dark:bg-gray-900 dark:border-gray-700 dark:text-gray-400" role="tooltip">
+                    <div className="hs-tooltip inline-block [--trigger:hover] [--placement:top] relative">
+                      <AiOutlineFieldTime className="-ml-10 hs-tooltip-toggle block text-center w-6 h-6 text-gray-600" />
+                      <div className="hs-tooltip-content hs-tooltip-shown:opacity-100 hs-tooltip-shown:visible opacity-0 transition-opacity absolute hidden invisible z-10 py-3 px-4 bg-white border text-sm text-gray-600 rounded-md max-w-sm shadow-md dark:bg-gray-900 dark:border-gray-700 dark:text-gray-400" role="tooltip">
                         <span className="pt-3 px-4 block text-md font-semibold text-gray-600 dark:text-white">Available time units</span>
                         <hr />
                         <table className="mt-3 mx-2">
@@ -239,7 +334,7 @@ export default function AddTask({ project_id, project_name, user, other_member }
                           </tbody>
                         </table>
                         <div className="px-2 py-3 font-normal text-xs text-gray-600">
-                          The data needs to be arranged in the correct order (mo - m), separated by a space. Ex: 1mo 2w 3d 4h 5m
+                          The data needs to be arranged in the correct order (mo - m). Ex: 1mo 2w 3d 4h 5m
                         </div>
                       </div>
                     </div>
@@ -249,16 +344,16 @@ export default function AddTask({ project_id, project_name, user, other_member }
               <div className="text-sm text-rose-500 flex justify-end items-start">
                 {formik.errors.estimate}
               </div>
-            </form>
-          </div>
-          <div className="flex justify-end items-center gap-x-2 py-3 px-4 border-t dark:border-gray-700">
-            <button type="button" className="hs-dropdown-toggle py-3 px-4 inline-flex justify-center items-center gap-2 rounded-md border font-medium bg-white text-gray-700 shadow-sm align-middle hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-white focus:ring-blue-600 transition-all text-sm dark:bg-slate-900 dark:hover:bg-slate-800 dark:border-gray-700 dark:text-gray-400 dark:hover:text-white dark:focus:ring-offset-gray-800" data-hs-overlay="#hs-focus-management-modal">
-              Close
-            </button>
-            <button type="submit" className="py-3 px-4 inline-flex justify-center items-center gap-2 rounded-md border border-transparent font-semibold bg-blue-500 text-white hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all text-sm dark:focus:ring-offset-gray-800">
-              Save changes
-            </button>
-          </div>
+            </div>
+            <div className="flex justify-end items-center gap-x-2 py-3 px-4 border-t dark:border-gray-700">
+              <button type="reset" className="hs-dropdown-toggle py-3 px-4 inline-flex justify-center items-center gap-2 rounded-md border font-medium bg-white text-gray-700 shadow-sm align-middle hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-white focus:ring-blue-600 transition-all text-sm dark:bg-slate-900 dark:hover:bg-slate-800 dark:border-gray-700 dark:text-gray-400 dark:hover:text-white dark:focus:ring-offset-gray-800" data-hs-overlay="#hs-focus-management-modal">
+                Close
+              </button>
+              <button type="submit" className="py-3 px-4 inline-flex justify-center items-center gap-2 rounded-md border border-transparent font-semibold bg-blue-500 text-white hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all text-sm dark:focus:ring-offset-gray-800">
+                Save changes
+              </button>
+            </div>
+          </form>
         </div >
       </div >
     </>

@@ -134,7 +134,7 @@ initialData.review.forEach((item) => {
   })
 })
 
-export default function Task({project_data}) {
+export default function Task({project_data, timeline}) {
   const [filterBy, setFilterBy] = useState('all')
   const [filterValue, setFilterValue] = useState('')
   const [lists, setLists] = useState(initialLists);
@@ -325,7 +325,7 @@ export default function Task({project_data}) {
           + Add Task
         </button>
         <div id="hs-focus-management-modal" className="hs-overlay hidden w-full h-full fixed top-0 left-0 z-[60] overflow-x-hidden overflow-y-auto">
-          <AddTask project_id={project_data.project_id} project_name={project_data.project_name} user={project_data.user} other_member={project_data.teammate}/>
+          <AddTask project_id={project_data.project_id} project_name={project_data.project_name} user={project_data.user} other_member={project_data.teammate} timeline={timeline}/>
         </div>
       </div>
 
