@@ -112,7 +112,6 @@ export default function List({ columns, data }) {
             </thead>
             <tbody {...getTableBodyProps()}>
               {rows.map(row => {
-                console.log(row);
                 prepareRow(row)
                 return (
                   <tr key={row.id} {...row.getRowProps()} className="odd:bg-white border-b even:bg-gray-50">

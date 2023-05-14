@@ -89,7 +89,7 @@ export default function ProjectDetail({ data, error, plan }) {
                     </div>
                     <div className="p-4 overflow-y-auto">
                       <p className="text-gray-800 dark:text-gray-400">
-                        If you select `&apos;`Leave`&apos;` , you will no longer have access to this project! <br /><br />
+                        If you select &apos;Leave&apos; , you will no longer have access to this project! <br /><br />
                         <span className="font-medium">Are you sure leave this project?</span>
                       </p>
                     </div>

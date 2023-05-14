@@ -18,7 +18,7 @@ export default function NavBar() {
     const decoded = jwt_decode(token)
     setUser({
       email: decoded.userEmail,
-      full_name: decoded.userFullname
+      full_name: decoded.userFullName
     })
   }, [])
 

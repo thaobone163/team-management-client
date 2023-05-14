@@ -4,9 +4,8 @@ import { useEffect, useState } from "react";
 import { TiDelete } from 'react-icons/ti'
 import { AiOutlineFieldTime } from 'react-icons/ai'
 import { formatToBE } from "@/util/common";
-import { actions } from "react-table";
 
-export default function AddTask({ project_id, project_name, user, other_member, timeline }) {
+export default function AddTask({ project_id, project_name, user, other_member, timeline, fn }) {
   const [creator, setCreator] = useState('')
   const [result, setResult] = useState({ isHidden: true, success: '', message: '' })
 
@@ -44,7 +43,7 @@ export default function AddTask({ project_id, project_name, user, other_member, 
   });
 
   function reset() {
-    setResult({isHidden: true})
+    setResult({ isHidden: true })
     formik.setValues({
       title: '',
       project: project_id,
@@ -61,11 +60,6 @@ export default function AddTask({ project_id, project_name, user, other_member, 
   async function handleAdd(values, actions) {
     const duedate = formatToBE(values.duedate)
     createTask(values.stage, values.title, values.project, values.description, values.assign, duedate, values.estimate, values.tags).then((data) => {
-      setResult({
-        isHidden: false,
-        success: data.success,
-        message: data.message
-      })
       if (data.success) {
         actions.resetForm({
           values: {
@@ -79,7 +73,14 @@ export default function AddTask({ project_id, project_name, user, other_member, 
             tags: []
           }
         })
+        fn()
+
       }
+      setResult({
+        isHidden: false,
+        success: data.success,
+        message: data.message
+      })
     })
   }
 

@@ -296,3 +296,163 @@ export async function createTask(stage, title, project, description, assign, due
     })
   return res
 }
+
+//  get list task by project_id
+export async function getListTaskByProject(id) {
+  const res = await api.get(`/api/project/${id}/task/list`, await getConfig())
+    .then(response => {
+      return response.data
+    })
+    .catch(error => {
+      return error.response.data
+    })
+  return res
+}
+
+// update task
+export async function updateTask(id, stage, title, description, assign, duedate, estimate, spend, status, tags, comment, order) {
+  const res = await api.put(`/api/task/update/${id}`, {stage, title, description, assign, duedate, estimate, spend, status, tags, comment, order}, await getConfig())
+    .then(response => {
+      return response.data
+    })
+    .catch(error => {
+      return error.response.data
+    })
+  return res
+}
+
+// update order task
+export async function updateOrderTask(id, order) {
+  const res = await api.put(`/api/task/update/${id}`, {order}, await getConfig())
+    .then(response => {
+      return response.data
+    })
+    .catch(error => {
+      return error.response.data
+    })
+  return res
+}
+
+// update status task
+export async function updateStatusTask(id, status) {
+  const res = await api.put(`/api/task/update/${id}`, {status}, await getConfig())
+    .then(response => {
+      return response.data
+    })
+    .catch(error => {
+      return error.response.data
+    })
+  return res
+}
+
+// get task by id
+export async function getTaskById(id) {
+  const res = await api.get(`/api/task/read/${id}`, await getConfig())
+    .then(response => {
+      return response.data
+    })
+    .catch(error => {
+      return error.response.data
+    })
+  return res
+}
+
+// update title + description task
+export async function updateTitleDescriptionTask(id, title, description) {
+  const res = await api.put(`/api/task/update/${id}`, {title, description}, await getConfig())
+    .then(response => {
+      return response.data
+    })
+    .catch(error => {
+      return error.response.data
+    })
+  return res
+}
+
+// update title task
+export async function updateTitleTask(id, title) {
+  const res = await api.put(`/api/task/update/${id}`, {title}, await getConfig())
+    .then(response => {
+      return response.data
+    })
+    .catch(error => {
+      return error.response.data
+    })
+  return res
+}
+
+// update description task
+export async function updateDescriptionTask(id, description) {
+  const res = await api.put(`/api/task/update/${id}`, {description}, await getConfig())
+    .then(response => {
+      return response.data
+    })
+    .catch(error => {
+      return error.response.data
+    })
+  return res
+}
+
+// update stage task
+export async function updateStageTask(id, stage) {
+  const res = await api.put(`/api/task/update/${id}`, {stage}, await getConfig())
+    .then(response => {
+      return response.data
+    })
+    .catch(error => {
+      return error.response.data
+    })
+  return res
+}
+
+// update assign task
+export async function updateAssignTask(id, assign) {
+  const res = await api.put(`/api/task/update/${id}`, {assign}, await getConfig())
+    .then(response => {
+      return response.data
+    })
+    .catch(error => {
+      return error.response.data
+    })
+  return res
+}
+
+// update field task
+export async function updateFieldTask(id, field) {
+  const res = await api.put(`/api/task/update/${id}`, field, await getConfig())
+    .then(response => {
+      return response.data
+    })
+    .catch(error => {
+      return error.response.data
+    })
+  return res
+}
+
+
+
+// comment task
+export async function commentTask(id, comment) {
+  const res = await api.put(`/api/task/update/${id}`, {comment}, await getConfig())
+    .then(response => {
+      return response.data
+    })
+    .catch(error => {
+      return error.response.data
+    })
+  return res
+}
+
+// delete task
+export async function deleteTask(id) {
+  const res = await api.delete(`/api/task/delete/${id}`, await getConfig())
+    .then(response => {
+      return response.data
+    })
+    .catch(error => {
+      return error.response.data
+    })
+
+  console.log(res);
+  return res
+}

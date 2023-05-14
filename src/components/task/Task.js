@@ -3,6 +3,8 @@ import Board from "./Board";
 import { CiFilter } from 'react-icons/ci'
 import { BsSearch } from 'react-icons/bs'
 import AddTask from "./AddTask";
+import { getListTaskByProject, updateOrderTask, updateStatusTask } from "@/util/mics";
+import { capitalizeFirstLetter } from "@/util/common";
 
 const initialLists = [
   {
@@ -23,123 +25,89 @@ const initialLists = [
   },
 ];
 
-const initialData = {
-  todo: [
-    {
-      id: "qwe1",
-      title: "Card 1",
-      project: 'Team 7 - INT3906 1',
-      description: 'This is description for task 1',
-      assign: 'Thao Bone',
-      duedate: '17/02/2023',
-      estimate: '4 Hours',
-      spend: '',
-      status: "todo",
-      order: 1,
-      tags: ['#tag_1', '#tag_2'],
-    },
-    {
-      id: "qwe3",
-      title: "Card 3",
-      project: 'Team 7 - INT3906 1',
-      description: 'This is description for task 3',
-      assign: 'Khai Ca',
-      duedate: '17/02/2023',
-      estimate: '4 Hours',
-      spend: '',
-      status: "todo",
-      order: 2,
-      tags: ['#tag_3'],
-    },
-    {
-      id: "qwe5",
-      title: "Card 5",
-      project: 'Team 7 - INT3906 1',
-      description: 'This is description for task 5',
-      assign: 'Thao Bone',
-      duedate: '17/02/2023',
-      estimate: '4 Hours',
-      spend: '',
-      status: "todo",
-      order: 3,
-      tags: ['#tag_1', '#tag_3'],
-    },
-  ],
-  doing: [
-    {
-      id: "qwe2",
-      title: "Card 2",
-      project: 'Team 7 - INT3906 1',
-      description: 'This is description for task 2',
-      assign: 'Ngoc Minh',
-      duedate: '17/02/2023',
-      estimate: '4 Hours',
-      spend: '3 Hours',
-      status: "doing",
-      order: 1,
-      tags: ['#tag_2'],
-    },
-  ],
-  done: [
-    {
-      id: "qwe4",
-      title: "Card 4",
-      project: 'Team 7 - INT3906 1',
-      description: 'This is description for task 4',
-      assign: 'Thao Bone',
-      duedate: '17/02/2023',
-      estimate: '4 Hours',
-      spend: '4 Hours',
-      status: "done",
-      order: 1,
-      tags: ['#tag_2', '#tag_3'],
-    },
-  ],
-  review: [
-    {
-      id: "qwe6",
-      title: "Card 6",
-      project: 'Team 7 - INT3906 1',
-      description: 'This is description for task 6',
-      assign: 'Thao Bone',
-      duedate: '17/02/2023',
-      estimate: '4 Hours',
-      spend: '5 Hours',
-      status: "review",
-      order: 1,
-      tags: ['#tag_2', '#tag_3'],
-    },
-  ]
-};
+function getAllTags(data) {
+  const allTags = new Map()
+  data.todo.forEach((item) => {
+    item.tags.forEach((tag) => {
+      allTags.set(tag, '')
+    })
+  })
+  data.doing.forEach((item) => {
+    item.tags.forEach((tag) => {
+      allTags.set(tag, '')
+    })
+  })
+  data.done.forEach((item) => {
+    item.tags.forEach((tag) => {
+      allTags.set(tag, '')
+    })
+  })
+  data.review.forEach((item) => {
+    item.tags.forEach((tag) => {
+      allTags.set(tag, '')
+    })
+  })
+  return allTags
+}
 
-const allTags = new Map()
-initialData.todo.forEach((item) => {
-  item.tags.forEach((tag) => {
-    allTags.set(tag, '')
-  })
-})
-initialData.doing.forEach((item) => {
-  item.tags.forEach((tag) => {
-    allTags.set(tag, '')
-  })
-})
-initialData.done.forEach((item) => {
-  item.tags.forEach((tag) => {
-    allTags.set(tag, '')
-  })
-})
-initialData.review.forEach((item) => {
-  item.tags.forEach((tag) => {
-    allTags.set(tag, '')
-  })
-})
+const reorder = (list, dropCard, targetCard, caseOrder) => {
+  const result = Array.from(list);
+  const startIndex = result.indexOf(dropCard)
+  const endIndex = result.indexOf(targetCard)
+  const [removed] = caseOrder === 1 ? result.splice(startIndex, 1) : [dropCard]
+  result.splice(endIndex, 0, removed);
 
-export default function Task({project_data, timeline}) {
+  result.map((item, index) => {
+    item.order = index + 1
+  })
+
+  return result;
+}
+
+export default function Task({ project_data, timeline }) {
   const [filterBy, setFilterBy] = useState('all')
   const [filterValue, setFilterValue] = useState('')
   const [lists, setLists] = useState(initialLists);
-  const [data, setData] = useState(initialData);
+  const [data, setData] = useState({ todo: [], doing: [], review: [], done: [] });
+  const [allTags, setAllTags] = useState(new Map())
   const [dataFilter, setDatafilter] = useState({ todo: [], doing: [], review: [], done: [] })
+
+  useEffect(() => {
+    getTaskList()
+  }, [])
+
+  async function getTaskList() {
+    await getListTaskByProject(project_data.project_id).then((data) => {
+      if (data.success) {
+        setData(data.data)
+        setAllTags(getAllTags(data.data))
+      }
+    })
+  }
+
+  async function updateOrder(list) {
+    if (list !== null) {
+      list.map((item) => {
+        updateOrderTask(item._id, item.order).then((data) => {
+          if(data.success) {
+            getTaskList()
+          } else {
+            alert(data.message)
+          }
+        })
+      })
+    }
+  }
+
+  async function updateStatus(id, status) {
+    await updateStatusTask(id, status).then((data) => {
+      if(data.success) {
+        getTaskList()
+      } else {
+        alert(status)
+      }
+    })
+  }
 
   // Handle Lists
   // Handle Lists ends here
@@ -210,10 +178,11 @@ export default function Task({project_data, timeline}) {
   const cardChangeHandler = (cardInfo, newStatus, targetCardId) => {
     const { id, status: oldStatus } = cardInfo;
 
-    let dropCard = data[oldStatus].find((el) => el.id === id);
+    let dropCard = data[oldStatus].find((el) => el._id === id);
+
     let targetCard =
       targetCardId !== ""
-        ? data[newStatus].find((el) => el.id === targetCardId)
+        ? data[newStatus].find((el) => el._id === targetCardId)
         : null;
 
     let newListOrderValueMax = data[newStatus]
@@ -222,25 +191,11 @@ export default function Task({project_data, timeline}) {
 
     // CASE 1: If same list, work only this if block then return;
     if (oldStatus === newStatus) {
-      let temp = data[oldStatus]
-        .map((item) => {
-          if (item.id === dropCard.id)
-            return {
-              ...dropCard,
-              order: targetCard
-                ? targetCard.order - 1
-                : newListOrderValueMax + 1,
-            };
-          return item;
-        })
-        .sort((a, b) => a.order - b.order)
-        .map((item, i) => {
-          return { ...item, order: i + 1 };
-        });
-
+      let newOrder = reorder(data[oldStatus], dropCard, targetCard, 1)
       setData((d) => {
-        return { ...d, [oldStatus]: temp };
+        return { ...d, [oldStatus]: newOrder };
       });
+      updateOrder(newOrder)
 
       if (filterValue !== '') {
         setDatafilter(filter(filterValue, data))
@@ -252,29 +207,39 @@ export default function Task({project_data, timeline}) {
 
     // CASE 2: Drag across multiple lists
     let tempGaveList = data[oldStatus]
-      .filter((item) => item.id !== id)
+      .filter((item) => item._id !== id)
       .sort((a, b) => a.order - b.order)
       .map((item, i) => {
         return { ...item, order: i + 1 };
       });
 
-    let tempRecievedList = [
-      ...data[newStatus],
-      {
-        ...dropCard,
-        order: targetCard ? targetCard.order - 1 : newListOrderValueMax + 1,
-      },
-    ]
-      .sort((a, b) => a.order - b.order)
-      .map((item, i) => {
-        return { ...item, order: i + 1 };
-      });
+
+    dropCard.status = capitalizeFirstLetter(newStatus)
+
+    let tempRecievedList = targetCard ? reorder(data[newStatus], dropCard, targetCard, 2) :
+      [
+        ...data[newStatus],
+        {
+          ...dropCard,
+          order: newListOrderValueMax + 1,
+        },
+      ]
+        .sort((a, b) => a.order - b.order)
+        .map((item, i) => {
+          return { ...item, order: i + 1 };
+        })
 
     // At last, set state
 
     setData((d) => {
       return { ...d, [oldStatus]: tempGaveList, [newStatus]: tempRecievedList };
     });
+
+    updateOrder(tempGaveList)
+    updateStatus(dropCard._id, dropCard.status)
+    updateOrder(tempRecievedList)
+
+
 
     if (filterValue !== '') {
       setDatafilter((d) => {
@@ -325,7 +290,7 @@ export default function Task({project_data, timeline}) {
           + Add Task
         </button>
         <div id="hs-focus-management-modal" className="hs-overlay hidden w-full h-full fixed top-0 left-0 z-[60] overflow-x-hidden overflow-y-auto">
-          <AddTask project_id={project_data.project_id} project_name={project_data.project_name} user={project_data.user} other_member={project_data.teammate} timeline={timeline}/>
+          <AddTask project_id={project_data.project_id} project_name={project_data.project_name} user={project_data.user} other_member={project_data.teammate} timeline={timeline} fn={getTaskList} />
         </div>
       </div>
 
