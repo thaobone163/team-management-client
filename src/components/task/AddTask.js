@@ -77,7 +77,7 @@ export default function AddTask({ project_id, project_name, user, other_member, 
 
       }
       setResult({
-        isHidden: false,
+        isHidden: true,
         success: data.success,
         message: data.message
       })
@@ -193,7 +193,7 @@ export default function AddTask({ project_id, project_name, user, other_member, 
                 </label>
                 <div className="shadow flex flex-wrap items-center text-sm border border-sky-500 rounded-lg py-3 pl-4 pr-3 focus:ring-0 focus:border-sky-500">
                   {formik.values.tags.map((tag, index) => (
-                    <div key={index} className="flex mr-2 my-1 rounded-md border p-1 w-full">
+                    <div key={index} className="flex mr-2 my-1 rounded-md border p-1 max-w-full">
                       <span className="max-w-[90%] break-words">
                         {tag}
                       </span>

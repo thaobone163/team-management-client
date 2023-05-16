@@ -22,7 +22,7 @@ export default function Overview() {
         }
       }
     })
-  },[])
+  },[router.asPath])
 
   return (
     <>
