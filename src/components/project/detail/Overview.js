@@ -177,7 +177,7 @@ export default function OverviewDetail({ data, timeline }) {
                         const check = new Date(formatToFe) < new Date()
                         return (
                           <li key={index} className={`${index === timeline.length - 1 ? '' : 'mb-4'} ml-4`}>
-                            <div className={`absolute w-3 h-3 ${check && Math.round(item.progress) === 1 ? 'bg-green-200' : 'bg-gray-200 '} rounded-full mt-1.5 -left-1.5 border border-white dark:border-gray-900 dark:bg-gray-700`}></div>
+                            <div className={`absolute w-3 h-3 ${(check && item.progress === 1) ? 'bg-green-200' : 'bg-gray-200 '} rounded-full mt-1.5 -left-1.5 border border-white dark:border-gray-900 dark:bg-gray-700`}></div>
                             <time className="mb-1 text-sm font-normal leading-none text-gray-400 dark:text-gray-500">{format}</time>
                             <h3 className="text-md font-semibold text-gray-900 dark:text-white">
                               {item.stage}

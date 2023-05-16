@@ -453,6 +453,5 @@ export async function deleteTask(id) {
       return error.response.data
     })
 
-  console.log(res);
   return res
 }
