@@ -88,3 +88,11 @@ export function timeTracking(spend, estimate) {
 export function capitalizeFirstLetter(string) {
   return string.charAt(0).toUpperCase() + string.slice(1);
 }
+
+export function convertToPercentText(number) {
+  return Math.round(number * 100) + '%'
+}
+
+export function convertToPercent(number) {
+  return Math.round(number * 100)
+}

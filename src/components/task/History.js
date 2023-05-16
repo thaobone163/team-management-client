@@ -30,18 +30,18 @@ export default function History({ history }) {
         <BsActivity className="mr-3" />
         Activity
       </div>
-      <ol className="ml-10 relative text-md text-gray-500 border-l border-gray-200 dark:border-gray-700 dark:text-gray-400">
+      <ol className="w-full ml-10 relative text-md text-gray-500 border-l border-gray-200 dark:border-gray-700 dark:text-gray-400">
         {history.map((activity, index) => {
           const content = activity.content.split('; ')
           return (
-            <div key={index}>
+            <div key={index} className='w-full'>
               {
                 content.map((item, index) => {
                   const split = item.split(': ')
 
                   if (split[0] === 'Assign') {
                     return (
-                      <li key={index} className="mb-7 ml-6 ">
+                      <li key={index} className="mb-7 ml-6 mr-14">
                         <span className=" absolute flex items-center justify-center w-8 h-8 bg-gray-100 rounded-full -left-4 ring-4 ring-white dark:ring-gray-900 dark:bg-gray-700">
                           <BsPersonCheckFill />
                         </span>
@@ -51,7 +51,7 @@ export default function History({ history }) {
                     )
                   } else if (split[0] === 'Due Date') {
                     return (
-                      <li key={index} className="mb-7 ml-6 ">
+                      <li key={index} className="mb-7 ml-6 mr-14 ">
                         <span className=" absolute flex items-center justify-center w-8 h-8 bg-gray-100 rounded-full -left-4 ring-4 ring-white dark:ring-gray-900 dark:bg-gray-700">
                           <BsCalendarEvent />
                         </span>
@@ -61,7 +61,7 @@ export default function History({ history }) {
                     )
                   } else if (split[0] === 'Comment') {
                     return (
-                      <li key={index} className="mb-7 ml-6 ">
+                      <li key={index} className="mb-7 ml-6 mr-14 ">
                         <span className=" absolute flex items-center justify-center w-8 h-8 bg-gray-100 rounded-full -left-4 ring-4 ring-white dark:ring-gray-900 dark:bg-gray-700">
                           <AiOutlineComment />
                         </span>
@@ -82,19 +82,19 @@ export default function History({ history }) {
                   } else if (split[0] === 'Tags') {
                     const tags = split[1].split(',')
                     return (
-                      <li key={index} className="mb-7 ml-6 ">
+                      <li key={index} className="mb-7 ml-6 mr-14 w-full">
                         <span className=" absolute flex items-center justify-center w-8 h-8 bg-gray-100 rounded-full -left-4 ring-4 ring-white dark:ring-gray-900 dark:bg-gray-700">
                           <BsTagsFill />
                         </span>
                         <h3 title={activity.user.email} className="font-medium leading-tight text-gray-700 mr-1">{activity.user.full_name}</h3>
-                        <div className="flex space-x-2 text-sm italic pt-2.5 break-words">
-                          <span>Changed tags to</span>
+                        <div className="flex flex-wrap text-sm italic pt-2.5 break-words w-full">
+                          <span className='mr-2 my-1'>Changed tags to</span>
                           {tags.map((tag, index) => (
-                            <div key={index} className={`text-xs ${colorTag.get(index)} text-white p-1 rounded font-semibold`}>
+                            <div key={index} className={`text-xs ${colorTag.get(index)} text-white p-1 mr-2 my-1 rounded font-semibold max-w-[50%] whitespace-nowrap`}>
                               {tag}
                             </div>
                           ))}
-                          <span>
+                          <span className='mr-2 my-1'>
                             at {activity.timestamp}
                           </span>
                         </div>
@@ -102,7 +102,7 @@ export default function History({ history }) {
                     )
                   } else if (split[0] === 'Estimate' || split[0] === 'Spend') {
                     return (
-                      <li key={index} className="mb-7 ml-6 ">
+                      <li key={index} className="mb-7 ml-6 mr-14">
                         <span className=" absolute flex items-center justify-center w-8 h-8 bg-gray-100 rounded-full -left-4 ring-4 ring-white dark:ring-gray-900 dark:bg-gray-700">
                           <BsClockFill />
                         </span>
@@ -112,7 +112,7 @@ export default function History({ history }) {
                     )
                   } else if (split[0] === 'Status') {
                     return (
-                      <li key={index} className="mb-7 ml-6 ">
+                      <li key={index} className="mb-7 ml-6 mr-14">
                         <span className=" absolute flex items-center justify-center w-8 h-8 bg-gray-100 rounded-full -left-4 ring-4 ring-white dark:ring-gray-900 dark:bg-gray-700">
                           <BsPencilFill />
                         </span>
@@ -128,7 +128,7 @@ export default function History({ history }) {
                     )
                   } else {
                     return (
-                      <li key={index} className="mb-7 ml-6 ">
+                      <li key={index} className="mb-7 ml-6 mr-14">
                         <span className=" absolute flex items-center justify-center w-8 h-8 bg-gray-100 rounded-full -left-4 ring-4 ring-white dark:ring-gray-900 dark:bg-gray-700">
                           <BsPencilFill />
                         </span>

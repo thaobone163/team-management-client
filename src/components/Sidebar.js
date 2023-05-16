@@ -22,7 +22,7 @@ export default function SideBar(props) {
 
     return (
         <>
-            <div className='fixed z-50 pt-6 px-5 flex flex-col space-y-7'>
+            <div className='fixed z-50 pt-4 px-5 flex flex-col space-y-7'>
                 <button onClick={toggleShow}>
                     <AiOutlineMenu className='w-6 h-6' />
                 </button>

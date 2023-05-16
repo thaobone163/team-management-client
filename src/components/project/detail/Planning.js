@@ -6,7 +6,7 @@ import { TfiPencil } from 'react-icons/tfi'
 import { MdOutlineDeleteOutline } from 'react-icons/md'
 import { useEffect, useState } from "react";
 import { createPlan, deleteStage, getPlanProject, updatePlanProject } from "@/util/mics";
-import { formatToBE, formatToFE } from "@/util/common";
+import { convertToPercentText, formatToBE, formatToFE } from "@/util/common";
 
 export default function Planning({ plan, role }) {
   const isDisable = (role !== 'Leader')
@@ -198,9 +198,12 @@ export default function Planning({ plan, role }) {
                     formik.setFieldValue('note', item.note)
                     formik.setFieldValue('deadline', formatToFe)
                   }} key={index} className={`${index === timeline.length - 1 ? '' : 'mb-10'} ml-4 cursor-pointer`}>
-                    <div className={`absolute w-3 h-3 ${check ? 'bg-green-200' : 'bg-rose-200 '} rounded-full mt-1.5 -left-1.5 border border-white dark:border-gray-900 dark:bg-gray-700`}></div>
+                    <div className={`absolute w-3 h-3 ${check && item.progress === 1 ? 'bg-green-200' : 'bg-rose-200 '} rounded-full mt-1.5 -left-1.5 border border-white dark:border-gray-900 dark:bg-gray-700`}></div>
                     <time className="mb-1 text-sm font-normal leading-none text-gray-400 dark:text-gray-500">{format}</time>
-                    <h3 className="text-lg font-semibold text-gray-900 dark:text-white">{item.stage}</h3>
+                    <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
+                      {item.stage}
+                      <span className={`ml-2 text-sm font-medium ${item.progress <= 0.2 ? 'text-rose-600' : item.progress <= 0.8 ? 'text-yellow-500' : 'text-green-500'}`}>{convertToPercentText(item.progress)}</span>
+                    </h3>
                     <p className="mb-4 text-base font-normal text-gray-500 dark:text-gray-400">{item.note}</p>
                   </li>
                 )

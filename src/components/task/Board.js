@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import Card from "./Card";
 import { BiTask } from 'react-icons/bi'
 
-export default function Board({ data, title, status, onChange, mapTags}) {
+export default function Board({ data, title, status, onChange, mapTags, projectInfo, fn}) {
   const [targetCardId, setTargetCardId] = useState()
   function findTargetId(targetId) {
     setTargetCardId(targetId)
@@ -50,6 +50,8 @@ export default function Board({ data, title, status, onChange, mapTags}) {
         status={status}
         mapTags={mapTags}
         findTargetId={findTargetId}
+        projectInfo={projectInfo}
+        fn={fn}
       />
     ));
   };

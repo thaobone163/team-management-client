@@ -3,6 +3,7 @@ import OverviewDetail from "./Overview";
 import Planning from "./Planning";
 import Task from "@/components/task/Task";
 import { useRouter } from "next/router";
+import Link from "next/link";
 
 export default function Detail({ data, plan, timeline }) {
   const [openTab, setOpenTab] = useState('');
@@ -18,7 +19,7 @@ export default function Detail({ data, plan, timeline }) {
             role="tablist"
           >
             <li className="mr-2 last:mr-0 flex-auto text-center">
-              <a
+              <Link
                 className={
                   "text-sm font-bold uppercase px-5 py-2 block leading-normal " +
                   (openTab === 'Overview'
@@ -35,10 +36,10 @@ export default function Detail({ data, plan, timeline }) {
                 role="tablist"
               >
                 Overview
-              </a>
+              </Link>
             </li>
             <li className="mr-2 last:mr-0 flex-auto text-center">
-              <a
+              <Link
                 className={
                   "text-sm font-bold uppercase px-5 py-2 block leading-normal " +
                   (openTab === 'Planning'
@@ -55,10 +56,10 @@ export default function Detail({ data, plan, timeline }) {
                 role="tablist"
               >
                 Planning
-              </a>
+              </Link>
             </li>
             <li className="mr-2 last:mr-0 flex-auto text-center">
-              <a
+              <Link
                 className={
                   "text-sm font-bold uppercase px-5 py-2 block leading-normal " +
                   (openTab === 'Tasks'
@@ -75,10 +76,10 @@ export default function Detail({ data, plan, timeline }) {
                 role="tablist"
               >
                 Tasks
-              </a>
+              </Link>
             </li>
             <li className="mr-2 last:mr-0 flex-auto text-center">
-              <a
+              <Link
                 className={
                   "text-sm font-bold uppercase px-5 py-2 block leading-normal " +
                   (openTab === 'Document'
@@ -95,10 +96,10 @@ export default function Detail({ data, plan, timeline }) {
                 role="tablist"
               >
                 Document
-              </a>
+              </Link>
             </li>
             <li className="mr-2 last:mr-0 flex-auto text-center">
-              <a
+              <Link
                 className={
                   "text-sm font-bold uppercase px-5 py-2 block leading-normal " +
                   (openTab === 'Statistic'
@@ -115,7 +116,7 @@ export default function Detail({ data, plan, timeline }) {
                 role="tablist"
               >
                 Statistic
-              </a>
+              </Link>
             </li>
           </ul>
           <div className="relative flex flex-col w-full">

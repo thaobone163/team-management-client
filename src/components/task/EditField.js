@@ -79,7 +79,7 @@ export default function EditField({ taskId, taskInfo, projectInfo, detail, field
               ? <>
                 {
                   isDisable
-                    ? detail.detail[field]
+                    ? <span className="break-words">{detail.detail[field]}</span>
                     : <textarea type="text"
                       id="field"
                       rows={3}
@@ -93,7 +93,7 @@ export default function EditField({ taskId, taskInfo, projectInfo, detail, field
                 ? <>
                   {
                     isDisable
-                      ? detail.detail[field]
+                      ? <span className="break-words">{detail.detail[field]}</span>
                       : <select
                         id="field"
                         className="border border-sky-300 shadow rounded-lg focus:border-sky-300"
@@ -135,7 +135,7 @@ export default function EditField({ taskId, taskInfo, projectInfo, detail, field
                       {
                         isDisable
                           ?
-                          <Assign email={detail.detail.assign} />
+                          <Assign className='break-words' email={detail.detail.assign} />
                           : <select
                             id='field'
                             className="border border-sky-300 shadow rounded-lg focus:border-sky-300"
@@ -195,7 +195,7 @@ export default function EditField({ taskId, taskInfo, projectInfo, detail, field
                       : field === 'duedate'
                         ? <>
                           {isDisable
-                            ? formatDate(detail.detail[field])
+                            ? <span className="break-words">{formatDate(detail.detail[field])}</span>
                             : <input type={'date'}
                               id='field'
                               value={formField.values.field}
@@ -206,7 +206,7 @@ export default function EditField({ taskId, taskInfo, projectInfo, detail, field
                         </>
                         : <>
                           {isDisable
-                            ? detail.detail[field]
+                            ? <span className="break-words">{detail.detail[field]}</span>
                             : <input type="text"
                               id='field'
                               value={formField.values.field}

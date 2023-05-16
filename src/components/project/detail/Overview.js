@@ -6,7 +6,7 @@ import 'react-circular-progressbar/dist/styles.css';
 import Link from "next/link"
 import { MdOutlineNavigateNext, MdNavigateBefore } from 'react-icons/md'
 import { useMemo, useState } from "react";
-import { formatToFE } from "@/util/common";
+import { convertToPercent, convertToPercentText, formatToFE } from "@/util/common";
 
 export default function OverviewDetail({ data, timeline }) {
   const router = useRouter()
@@ -27,7 +27,7 @@ export default function OverviewDetail({ data, timeline }) {
   return (
     <>
       <div className="flex justify-between w-full">
-        <div className="flex flex-col w-[48%]">
+        <div className="flex flex-col w-[48%] space-y-5">
           <div className="flex flex-col bg-white p-5 shadow rounded-md">
             <div className="flex items-center justify-between font-semibold text-lg text-sky-600">
               {data.project_name}
@@ -133,13 +133,11 @@ export default function OverviewDetail({ data, timeline }) {
               }
             </div>
           </div>
-        </div>
-        <div className="flex flex-col w-[48%] space-y-5">
           <div className="flex justify-between bg-white p-5 shadow rounded-md">
             <div className="font-semibold text-lg text-gray-600">
               Progress
               <p className="p-4 pb-0 font-medium text-sm">
-                Your team has completed 25% of the project. <br /><br />
+                Your team has completed {convertToPercentText(data.project_progress)} of the project. <br /><br />
                 <span className="text-sky-600">
                   Fighting!
                 </span>
@@ -147,19 +145,22 @@ export default function OverviewDetail({ data, timeline }) {
             </div>
             <div className="w-28 h-28">
               <CircularProgressbar
-                value={20}
-                text={`20%`}
+                value={convertToPercent(data.project_progress)}
+                text={`${convertToPercentText(data.project_progress)}`}
                 strokeWidth={7}
                 styles={
                   buildStyles({
                     textColor: "#1f2937",
-                    pathColor: "#22c55e",
-                    trailColor: "#dcfce7"
+                    pathColor: data.project_progress <= 0.2 ? '#f43f5e' : data.project_progress <= 0.8 ? '#eab308' : "#22c55e",
+                    trailColor: data.project_progress <= 0.2 ? '#ffe4e6' : data.project_progress <= 0.8 ? '#fef9c3' : "#dcfce7"
                   })
                 }
               />
             </div>
           </div>
+        </div>
+        <div className="flex flex-col w-[48%] space-y-5">
+
           <div className="flex flex-col bg-white p-5 shadow rounded-md">
             <div className="text-md uppercase font-semibold text-cyan-600">
               Timeline
@@ -181,9 +182,12 @@ export default function OverviewDetail({ data, timeline }) {
                             formik.setFieldValue('note', item.note)
                             formik.setFieldValue('deadline', formatToFe)
                           }} key={index} className={`${index === timeline.length - 1 ? '' : 'mb-4'} ml-4 cursor-pointer`}>
-                            <div className={`absolute w-3 h-3 ${check ? 'bg-green-200' : 'bg-rose-200 '} rounded-full mt-1.5 -left-1.5 border border-white dark:border-gray-900 dark:bg-gray-700`}></div>
+                            <div className={`absolute w-3 h-3 ${check && item.progress === 1 ? 'bg-green-200' : 'bg-rose-200 '} rounded-full mt-1.5 -left-1.5 border border-white dark:border-gray-900 dark:bg-gray-700`}></div>
                             <time className="mb-1 text-sm font-normal leading-none text-gray-400 dark:text-gray-500">{format}</time>
-                            <h3 className="text-md font-semibold text-gray-900 dark:text-white">{item.stage}</h3>
+                            <h3 className="text-md font-semibold text-gray-900 dark:text-white">
+                              {item.stage}
+                              <span className={`ml-2 text-sm font-medium ${item.progress <= 0.2 ? 'text-rose-600' : item.progress <= 0.8 ? 'text-yellow-500' : 'text-green-500'}`}>{convertToPercentText(item.progress)}</span>
+                            </h3>
                             <p className="mb-4 text-sm font-normal text-gray-500 dark:text-gray-400">{item.note}</p>
                           </li>
                         )

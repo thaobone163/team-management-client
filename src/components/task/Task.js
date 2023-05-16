@@ -286,10 +286,10 @@ export default function Task({ project_data, timeline }) {
             </button>
           </div>
         </div>
-        <button data-hs-overlay="#hs-focus-management-modal" className={`bg-sky-400 rounded px-2 py-1.5 text-white font-semibold shadow`}>
+        <button data-hs-overlay="#hs-focus-add-task-modal" className={`bg-sky-400 rounded px-2 py-1.5 text-white font-semibold shadow`}>
           + Add Task
         </button>
-        <div id="hs-focus-management-modal" className="hs-overlay hidden w-full h-full fixed top-0 left-0 z-[60] overflow-x-hidden overflow-y-auto">
+        <div id="hs-focus-add-task-modal" className="hs-overlay hidden w-full h-full fixed top-0 left-0 z-[60] overflow-x-hidden overflow-y-auto">
           <AddTask project_id={project_data.project_id} project_name={project_data.project_name} user={project_data.user} other_member={project_data.teammate} timeline={timeline} fn={getTaskList} />
         </div>
       </div>
@@ -303,6 +303,8 @@ export default function Task({ project_data, timeline }) {
             status={list.status}
             onChange={cardChangeHandler}
             mapTags={allTags}
+            projectInfo={{project_data, timeline}}
+            fn={getTaskList}
           />
         ))}
       </div>

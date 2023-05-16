@@ -2,9 +2,11 @@ import Head from 'next/head'
 import { Inter } from '@next/font/google'
 import Overview from '@/components/project/Overview'
 import List from '@/components/project/List'
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import axios from 'axios'
 import { useRouter } from 'next/router'
+import { BsListUl } from 'react-icons/bs'
+import { invitationList } from '@/util/mics'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -36,14 +38,16 @@ export default function Pending({ error, list }) {
   const data = React.useMemo(
     () => {
       const data = []
-      list.map((item) => {
-        data.push({
-          id: item.project_id,
-          project: item.project_name,
-          role: item.role,
-          status: 'Pending'
+      if (!error) {
+        list.map((item) => {
+          data.push({
+            id: item.project_id,
+            project: item.project_name,
+            role: item.role,
+            status: 'Pending'
+          })
         })
-      })
+      }
       return data
     },
     []
@@ -59,8 +63,17 @@ export default function Pending({ error, list }) {
         <main >
           <div className='flex space-x-12'>
             <Overview />
-            <div className='pt-10 w-[90%] text-center text-gray-500'>
-              {error}
+            <div className='w-[90%] pl-44 -mt-4'>
+              <div className='text-2xl text-gray-600 font-semibold pb-8 uppercase w-fit flex flex-col space-y-3'>
+                <div className='flex items-center'>
+                  <BsListUl className='mr-3' />
+                  Pending Approval Invitation
+                </div>
+                <hr className='w-[450px]' />
+              </div>
+              <div className='pt-10 w-[90%] text-center text-gray-500'>
+                {error}
+              </div>
             </div>
           </div>
         </main>
@@ -77,7 +90,16 @@ export default function Pending({ error, list }) {
       <main >
         <div className='flex space-x-12'>
           <Overview />
-          <List columns={column} data={data} />
+          <div className='w-[90%] pl-44 -mt-4'>
+            <div className='text-2xl text-gray-600 font-semibold pb-8 uppercase w-fit flex flex-col space-y-3'>
+              <div className='flex items-center'>
+                <BsListUl className='mr-3' />
+                Pending Approval Invitation
+              </div>
+              <hr className='w-[450px]' />
+            </div>
+            <List columns={column} data={data} />
+          </div>
         </div>
       </main>
     </>

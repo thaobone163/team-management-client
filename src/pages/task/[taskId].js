@@ -10,6 +10,7 @@ import Head from "next/head"
 import EditTask from "@/components/task/EditTask"
 import History from "@/components/task/History"
 import { BsSend, BsInfoCircle } from 'react-icons/bs'
+import Link from "next/link"
 
 export default function TaskDetail({ taskInfo, projectInfo, error }) {
   const [detail, setDetail] = useState(taskInfo)
@@ -104,17 +105,17 @@ export default function TaskDetail({ taskInfo, projectInfo, error }) {
         <div className="w-[70%]">
           <div className="flex flex-col space-y-4">
             <div className="text-sm text-gray-600">
-              <a href={`/project/${detail.projectId}`} className="pr-2 font-medium hover:text-sky-500">
+              <Link href={`/project/${detail.projectId}`} className="pr-2 font-medium hover:text-sky-500">
                 {projectInfo.name}
-              </a>
+              </Link>
               &gt;
-              <a href="" className="px-2 font-medium hover:text-sky-500">
+              <Link href="" className="px-2 font-medium hover:text-sky-500">
                 {detail.stage}
-              </a>
+              </Link>
               &gt;
-              <a href="" className="pl-2 font-medium hover:text-sky-500">
+              <Link href="" className="pl-2 font-medium hover:text-sky-500">
                 {detail.title}
-              </a>
+              </Link>
             </div>
             <hr />
             <div className="flex items-start space-x-14">
@@ -191,7 +192,7 @@ export default function TaskDetail({ taskInfo, projectInfo, error }) {
                         <button type="button" className="hs-dropdown-toggle py-3 px-4 inline-flex justify-center items-center gap-2 rounded-md border font-medium bg-white text-gray-700 shadow-sm align-middle hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-white focus:ring-blue-600 transition-all text-sm dark:bg-slate-900 dark:hover:bg-slate-800 dark:border-gray-700 dark:text-gray-400 dark:hover:text-white dark:focus:ring-offset-gray-800" data-hs-overlay="#hs-vertically-centered-delete-task">
                           Cancel
                         </button>
-                        <button onClick={handleDeleteTask} className="py-3 px-4 inline-flex justify-center items-center gap-2 rounded-md border border-transparent font-semibold bg-blue-500 text-white hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all text-sm dark:focus:ring-offset-gray-800">
+                        <button onClick={handleDeleteTask} data-hs-overlay="#hs-vertically-centered-delete-task" className="py-3 px-4 inline-flex justify-center items-center gap-2 rounded-md border border-transparent font-semibold bg-rose-500 text-white hover:bg-rose-600 focus:outline-none focus:ring-2 focus:ring-rose-500 focus:ring-offset-2 transition-all text-sm dark:focus:ring-offset-gray-800">
                           Delete
                         </button>
                       </div>
@@ -253,8 +254,8 @@ export default function TaskDetail({ taskInfo, projectInfo, error }) {
               </div>
             </form>
           </div>
-          <div className="flex flex-col space-y-5 pb-10">
-            <History history={detail.updates} />
+          <div className="flex flex-col space-y-5 pb-10 w-full">
+            <History history={detail.updates} className='w-full'/>
             <form className="relative" onSubmit={formComment.handleSubmit} onReset={formComment.handleReset}>
               <label htmlFor='comment'
                 className='absolute ml-2.5 px-2 bg-white text-md font-medium text-sky-500'>

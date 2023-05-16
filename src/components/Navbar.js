@@ -29,8 +29,8 @@ export default function NavBar() {
 
   return (
     <>
-      <div className="fixed z-40 bg-white px-16 py-4 border-b shadow-lg shadow-gray-100 w-full flex justify-between">
-        <a href='' className="text-4xl font-semibold text-sky-500">Team.</a>
+      <div className="fixed z-40 bg-white px-16 py-2 border-b shadow-lg shadow-gray-100 w-full flex justify-between">
+        <Link href='' className="text-4xl font-semibold text-sky-500">Team.</Link>
         <div className='flex space-x-9'>
           <Link href={`/user`} className="flex space-x-3 items-center">
             <img src={
@@ -40,8 +40,8 @@ export default function NavBar() {
               className="w-9 h-9 border-1 shadow rounded-full" />
             <div className='font-semibold text-lg text-gray-700'>{user.full_name}</div>
           </Link>
-          <button onClick={handleSignOut} className='flex items-center border rounded-md px-4'>
-            <IoLogOutOutline className='w-6 h-6 mr-2' />
+          <button onClick={handleSignOut} className='flex items-center border rounded-md px-3 text-sm text-gray-900'>
+            <IoLogOutOutline className='w-5 h-5 mr-2' />
             Sign Out
           </button>
         </div>

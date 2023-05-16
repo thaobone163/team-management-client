@@ -44,7 +44,7 @@ export default function Forgot() {
             </Head>
             <main>
                 <div className="pl-12 pt-[31px] w-full">
-                    <a href='' className="text-4xl font-semibold text-sky-500">Team.</a>
+                    <Link href='' className="text-4xl font-semibold text-sky-500">Team.</Link>
                 </div>
                 <div className="flex px-8 pr-24 w-full">
                     <Poster></Poster>

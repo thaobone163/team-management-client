@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react';
 import { getProjectOverview } from '@/util/mics';
 
 
-export default function Overview(props) {
+export default function Overview() {
   const router = useRouter().asPath.split('/')
   const [count, setCount] = useState({
     countProcessing: '',
@@ -22,7 +22,7 @@ export default function Overview(props) {
         }
       }
     })
-  },[props.routerParam])
+  },[])
 
   return (
     <>

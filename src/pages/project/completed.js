@@ -4,6 +4,7 @@ import React from 'react'
 import List from '@/components/project/List'
 import axios from 'axios'
 import { useRouter } from 'next/router'
+import { BsListUl } from 'react-icons/bs'
 
 export default function Completed({ error, list }) {
   const router = useRouter()
@@ -51,14 +52,23 @@ export default function Completed({ error, list }) {
     return (
       <>
         <Head>
-          <title>Pending Project</title>
+          <title>Completed Project</title>
           <link rel="icon" href="/favicon.ico" />
         </Head>
         <main >
           <div className='flex space-x-12'>
             <Overview />
-            <div className='pt-10 w-[90%] text-center text-gray-500'>
-              {error}
+            <div className='w-[90%] pl-44 -mt-4'>
+              <div className='text-2xl text-gray-600 font-semibold pb-8 uppercase w-fit flex flex-col space-y-3'>
+                <div className='flex items-center'>
+                  <BsListUl className='mr-3' />
+                  Completed Projects
+                </div>
+                <hr className=' w-80' />
+              </div>
+              <div className='pt-10 w-[90%] text-center text-gray-500'>
+                {error}
+              </div>
             </div>
           </div>
         </main>
@@ -75,7 +85,16 @@ export default function Completed({ error, list }) {
       <main >
         <div className='flex space-x-12'>
           <Overview />
-          <List columns={column} data={data} />
+          <div className='w-[90%] pl-44 -mt-4'>
+            <div className='text-2xl text-gray-600 font-semibold pb-8 uppercase w-fit flex flex-col space-y-3'>
+              <div className='flex items-center'>
+                <BsListUl className='mr-3' />
+                Completed Projects
+              </div>
+              <hr className=' w-80' />
+            </div>
+            <List columns={column} data={data} />
+          </div>
         </div>
       </main>
     </>
