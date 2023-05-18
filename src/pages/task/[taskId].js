@@ -19,22 +19,6 @@ export default function TaskDetail({ taskInfo, projectInfo, error }) {
   const [isDisableTitle, setIsDisableTitle] = useState(true)
   const { taskId } = router.query
 
-  if (error) {
-    return (
-      <>
-        <Head>
-          <title>Error Task</title>
-          <link rel="icon" href="/favicon.ico" />
-        </Head>
-        <main >
-          <div>
-            <Error error={error} />
-          </div>
-        </main>
-      </>
-    )
-  }
-
   const validate = values => {
     const errors = {};
     if (!/^ *([0-9]+(mo|month|months))? *([0-9]+(w|week|weeks))? *([0-9]+(d|day|days))? *([0-9]+(h|hour|hours))? *([0-9]+(m|minute|minutes))? *$/i.test(values.estimate)) {
@@ -68,7 +52,7 @@ export default function TaskDetail({ taskInfo, projectInfo, error }) {
     })
   }
   const formTitle = useFormik({
-    initialValues: {
+    initialValues: taskInfo === undefined ? {} : {
       title: taskInfo.title,
       description: taskInfo.description,
       projectId: taskInfo.projectId,
@@ -110,6 +94,22 @@ export default function TaskDetail({ taskInfo, projectInfo, error }) {
         router.replace(`/project/${taskInfo.projectId}?tab=Tasks`)
       }
     })
+  }
+
+  if (error) {
+    return (
+      <>
+        <Head>
+          <title>Error Task</title>
+          <link rel="icon" href="/favicon.ico" />
+        </Head>
+        <main >
+          <div>
+            <Error error={error} />
+          </div>
+        </main>
+      </>
+    )
   }
 
   return (
