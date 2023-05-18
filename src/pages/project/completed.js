@@ -34,16 +34,18 @@ export default function Completed({ error, list }) {
   const data = React.useMemo(
     () => {
       const data = []
-      list.map((item) => {
-        data.push({
-          id: item.id,
-          project: item.name,
-          role: item.user.role,
-          status: 'Completed',
-          progress: item.progress
+      if (!error) {
+        list.map((item) => {
+          data.push({
+            id: item.id,
+            project: item.name,
+            role: item.user.role,
+            status: 'Completed',
+            progress: item.progress
+          })
         })
-      })
-      return data
+        return data
+      }
     },
     []
   )

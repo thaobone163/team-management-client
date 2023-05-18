@@ -1,3 +1,4 @@
+import Error from "@/components/Error";
 import Detail from "@/components/project/detail/Detail";
 import Overview from "@/components/project/Overview";
 import { denyInvitation, getPlanProject } from "@/util/mics";
@@ -11,6 +12,7 @@ export default function ProjectDetail({ data, error, plan }) {
   const router = useRouter()
   const { projectId } = router.query
   const [alwayUpdate, setAlwayUpdate] = useState('')
+
   useEffect(() => {
     getPlanProject(projectId).then((data) => {
       if (data.success) {
@@ -23,14 +25,14 @@ export default function ProjectDetail({ data, error, plan }) {
     return (
       <>
         <Head>
-          <title>Pending Project</title>
+          <title>Error Project</title>
           <link rel="icon" href="/favicon.ico" />
         </Head>
         <main >
           <div className='flex space-x-12'>
             <Overview />
             <div className='pt-10 w-[90%] text-center text-gray-500'>
-              {error}
+              <Error error={error} />
             </div>
           </div>
         </main>

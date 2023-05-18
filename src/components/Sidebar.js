@@ -49,26 +49,19 @@ export default function SideBar(props) {
             </div>
             {option === 'project' ? <div className='w-2 h-10 mr-px -my-4 bg-sky-400 rounded-l-md'></div> : <div className='w-2 h-10 mr-px -my-4 rounded-l-md'></div>}
           </Link>
-          <button className='flex items-center justify-between'>
+          <Link href={'/task/assigned'} className='flex items-center justify-between'>
             <div className='flex items-center'>
               <BiTask className='w-6 h-6 mr-5 text-gray-500' />
               {show ? <span className='pr-5'>Tasks</span> : null}
             </div>
             {option === 'task' ? <div className='w-2 h-10 mr-px -my-4 bg-sky-400 rounded-l-md'></div> : <div className='w-2 h-10 mr-px -my-4 rounded-l-md'></div>}
-          </button>
+          </Link>
           <button className='flex items-center justify-between'>
             <div className='flex items-center'>
               <IoMdNotificationsOutline className='w-6 h-6 mr-5' />
               {show ? <span className='pr-5'>Notification</span> : null}
             </div>
             {option === 'notification' ? <div className='w-2 h-10 mr-px -my-4 bg-sky-400 rounded-l-md'></div> : <div className='w-2 h-10 mr-px -my-4 rounded-l-md'></div>}
-          </button>
-          <button className='flex items-center justify-between'>
-            <div className='flex items-center'>
-              <AiOutlineSetting className='w-6 h-6 mr-5' />
-              {show ? <span className='pr-5'>Setting</span> : null}
-            </div>
-            {option === 'setting' ? <div className='w-2 h-10 mr-px -my-4 bg-sky-400 rounded-l-md'></div> : <div className='w-2 h-10 mr-px -my-4 rounded-l-md'></div>}
           </button>
           <button className='flex items-center justify-between'>
             <div className='flex items-center'>

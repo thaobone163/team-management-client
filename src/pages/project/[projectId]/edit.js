@@ -5,42 +5,40 @@ import { useRouter } from 'next/router'
 import Info from '@/components/project/Info'
 import { getProjectId } from '@/util/mics'
 import axios from 'axios'
+import Error from '@/components/Error'
 
 export default function Edit({ data, error }) {
   const router = useRouter()
   const { projectId } = router.query
 
-  const value = React.useMemo(
-    () => (
-      {
-        project_name: data.project_name,
-        description: data.project_description,
-        user: {
-          email: '',
-          role: data.user.role
-        },
-        teammate: data.teammate
-      }
-    ), []
-  )
-
   if (error) {
     return (
       <>
         <Head>
-          <title>Pending Project</title>
+          <title>Error</title>
           <link rel="icon" href="/favicon.ico" />
         </Head>
         <main >
           <div className='flex space-x-12'>
             <Overview />
             <div className='pt-10 w-[90%] text-center text-gray-500'>
-              {error}
+              <Error error={error} />
             </div>
           </div>
         </main>
       </>
     )
+  }
+
+  const value =
+  {
+    project_name: data.project_name,
+    description: data.project_description,
+    user: {
+      email: '',
+      role: data.user.role
+    },
+    teammate: data.teammate
   }
 
   return (

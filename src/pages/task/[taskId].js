@@ -11,12 +11,29 @@ import EditTask from "@/components/task/EditTask"
 import History from "@/components/task/History"
 import { BsSend, BsInfoCircle } from 'react-icons/bs'
 import Link from "next/link"
+import Error from "@/components/Error"
 
 export default function TaskDetail({ taskInfo, projectInfo, error }) {
   const [detail, setDetail] = useState(taskInfo)
   const router = useRouter()
   const [isDisableTitle, setIsDisableTitle] = useState(true)
   const { taskId } = router.query
+
+  if (error) {
+    return (
+      <>
+        <Head>
+          <title>Error Task</title>
+          <link rel="icon" href="/favicon.ico" />
+        </Head>
+        <main >
+          <div>
+            <Error error={error} />
+          </div>
+        </main>
+      </>
+    )
+  }
 
   const validate = values => {
     const errors = {};
@@ -255,7 +272,7 @@ export default function TaskDetail({ taskInfo, projectInfo, error }) {
             </form>
           </div>
           <div className="flex flex-col space-y-5 pb-10 w-full">
-            <History history={detail.updates} className='w-full'/>
+            <History history={detail.updates} className='w-full' />
             <form className="relative" onSubmit={formComment.handleSubmit} onReset={formComment.handleReset}>
               <label htmlFor='comment'
                 className='absolute ml-2.5 px-2 bg-white text-md font-medium text-sky-500'>
