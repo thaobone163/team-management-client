@@ -61,7 +61,7 @@ export default function Notification({ notification, error }) {
             {list.map((item) => {
               const time = item.createdAt.split(' ')
               return (
-                <div className="flex items-center justify-around shadow w-[50%] px-5 rounded-lg border">
+                <div key={item._id} className="flex items-center justify-around shadow w-[50%] px-5 rounded-lg border">
                   <div className="flex space-x-5 items-center">
                     {
                       item.type === 'Assign'
