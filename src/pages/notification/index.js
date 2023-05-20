@@ -64,7 +64,7 @@ export default function Notification({ notification, error }) {
                 <div className="flex items-center justify-around shadow w-[50%] px-5 rounded-lg border">
                   <div className="flex space-x-5 items-center">
                     {
-                      item.type === 'assign'
+                      item.type === 'Assign'
                         ? <>
                           <MdAssignmentInd className="w-12 h-12 text-blue-400" />
                           <div className="flex flex-col space-y-2 py-3 pr-5">
@@ -73,7 +73,7 @@ export default function Notification({ notification, error }) {
                             <span className="text-sm text-sky-600 font-medium">{time[0]} {formatDate(time[1])}</span>
                           </div>
                         </>
-                        : item.type === 'comment'
+                        : item.type === 'Comment'
                           ? <>
                             <AiOutlineComment className="w-12 h-12 text-blue-400" />
                             <div className="flex flex-col space-y-2 py-3 pr-5">
