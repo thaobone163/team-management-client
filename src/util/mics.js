@@ -455,3 +455,27 @@ export async function deleteTask(id) {
 
   return res
 }
+
+// get list folder
+export async function getListFolder(projectId) {
+  const res = await api.get(`/api/folder/list/${projectId}`, await getConfig())
+    .then(response => {
+      return response.data
+    })
+    .catch(error => {
+      return error.response.data
+    })
+  return res
+}
+
+// create new folder
+export async function createNewFolder(field) {
+  const res = await api.post(`/api/folder/create`, field, await getConfig())
+    .then(response => {
+      return response.data
+    })
+    .catch(error => {
+      return error.response.data
+    })
+  return res
+}

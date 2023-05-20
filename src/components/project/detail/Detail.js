@@ -4,6 +4,7 @@ import Planning from "./Planning";
 import Task from "@/components/task/Task";
 import { useRouter } from "next/router";
 import Link from "next/link";
+import Document from "./document/Document";
 
 export default function Detail({ data, plan, timeline }) {
   const [openTab, setOpenTab] = useState('');
@@ -130,6 +131,9 @@ export default function Detail({ data, plan, timeline }) {
                 </div>
                 <div className={openTab === 'Tasks' || tab === 'Tasks' ? "block" : "hidden"} id="tasks">
                   <Task project_data={data} timeline={plan.timeline} />
+                </div>
+                <div className={openTab === 'Document' || tab === 'Document' ? "block" : "hidden"} id="document">
+                  <Document project_Info={{name: data.project_name, id: data.project_id}}/>
                 </div>
               </div>
             </div>
