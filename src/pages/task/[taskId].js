@@ -121,18 +121,18 @@ export default function TaskDetail({ taskInfo, projectInfo, error }) {
       <div className={`flex justify-between`}>
         <div className="w-[70%]">
           <div className="flex flex-col space-y-4">
-            <div className="text-sm text-gray-600">
+            <div className="text-sm text-gray-600 flex">
               <Link href={`/project/${detail.projectId}`} className="pr-2 font-medium hover:text-sky-500">
                 {projectInfo.name}
               </Link>
               &gt;
-              <Link href="" className="px-2 font-medium hover:text-sky-500">
+              <div className="px-2 font-medium hover:text-sky-500">
                 {detail.stage}
-              </Link>
+              </div>
               &gt;
-              <Link href="" className="pl-2 font-medium hover:text-sky-500">
+              <div className="pl-2 font-medium hover:text-sky-500">
                 {detail.title}
-              </Link>
+              </div>
             </div>
             <hr />
             <div className="flex items-start space-x-14">

@@ -46,7 +46,7 @@ export default function Assigned({ list, error }) {
       listTask.map((task) => {
         const time = task.createdAt.split(' ')
         data.push({
-          id: task.projectId,
+          id: task.taskId,
           title: task.title,
           project: task.projectName,
           description: task.description,

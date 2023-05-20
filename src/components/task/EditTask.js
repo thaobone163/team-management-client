@@ -156,7 +156,7 @@ export default function EditTask({ taskId, taskInfo, projectInfo, detail }) {
           </span>
           <div className="flex w-full h-1.5 bg-gray-200 rounded-full overflow-hidden dark:bg-gray-700">
             {
-              timeTracking(detail.detail.spend, detail.detail.estimate) >= 100
+              timeTracking(detail.detail.spend, detail.detail.estimate) > 100
                 ? <div className="flex flex-col justify-center overflow-hidden bg-rose-500 min-w-full"></div>
                 : <div className="flex flex-col justify-center overflow-hidden bg-blue-500" role="progressbar" style={{ width: `${timeTracking(detail.detail.spend, detail.detail.estimate)}%` }} aria-valuenow={timeTracking(detail.detail.spend, detail.detail.estimate)} aria-valuemin="0" aria-valuemax="100"></div>
 

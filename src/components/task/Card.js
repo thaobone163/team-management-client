@@ -188,8 +188,8 @@ export default function Card({ taskInfo, id, status, mapTags, findTargetId, proj
             </svg>
           </button>
         </div>
-        <div className="p-4 overflow-y-scroll overscroll-y-contain h-screen">
-          <EditTask taskId={id} taskInfo={taskInfo} projectInfo={projectInfo} detail={{ detail, setDetail }} />
+        <div className="p-4 pb-20 overflow-y-scroll overscroll-y-contain h-screen">
+          <EditTask taskId={id} taskInfo={taskInfo} projectInfo={projectInfo.project_data} detail={{ detail, setDetail }} />
         </div>
       </div>
       <div id={`hs-vertically-centered-delete-task-${id}`} className="hs-overlay hidden w-full h-full fixed top-0 left-0 z-[60] overflow-x-hidden overflow-y-auto">

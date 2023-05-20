@@ -3,7 +3,7 @@ import Board from "./Board";
 import { CiFilter } from 'react-icons/ci'
 import { BsSearch } from 'react-icons/bs'
 import AddTask from "./AddTask";
-import { getListTaskByProject, updateOrderTask, updateStatusTask } from "@/util/mics";
+import { getListTaskByProject, getUserByEmail, updateOrderTask, updateStatusTask } from "@/util/mics";
 import { capitalizeFirstLetter } from "@/util/common";
 
 const initialLists = [
@@ -74,6 +74,11 @@ export default function Task({ project_data, timeline }) {
 
   useEffect(() => {
     getTaskList()
+    getUserByEmail(project_data.user.email).then((data) => {
+      if (data.success) {
+        project_data.user = {...project_data.user, name: data.full_name}
+      }
+    })
   }, [])
 
   async function getTaskList() {
