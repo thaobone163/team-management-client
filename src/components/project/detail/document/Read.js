@@ -3,7 +3,7 @@ import { useState } from "react";
 import { FcFolder, FcOpenedFolder, FcFile } from 'react-icons/fc'
 
 export default function Read({ folder, list, setParent, path }) {
-  const [show, setShow] = useState({status: false, folder: null})
+  const [show, setShow] = useState({ status: false, folder: null })
 
   return (
     <>
@@ -45,10 +45,15 @@ export default function Read({ folder, list, setParent, path }) {
                         ? item.items.map(item => {
                           const name = item.url.split('-')
                           return (
-                            <Link href={item.url} className="border-t pt-2 pl-10 flex text-gray-700 items-center" key={item._id}>
-                              <FcFile className={`w-8 h-8 mr-2`} />
-                              {name[name.length - 1]}
-                            </Link>
+                            <div key={item._id} className='flex items-center justify-between border-t pt-2'>
+                              <Link href={item.url} className="pl-10 flex text-gray-700 items-center" target='_blank' >
+                                <FcFile className={`w-8 h-8 mr-2`} />
+                                {name[name.length - 1]}
+                              </Link>
+                              <div className='flex items-center text-sm italic text-gray-600 mr-8'>
+                                Created by {item.author}
+                              </div>
+                            </div>
                           )
                         })
                         : null
