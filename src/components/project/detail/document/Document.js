@@ -13,12 +13,16 @@ export default function Document({ project_Info }) {
   const [path, setPath] = useState('')
   const router = useRouter()
 
-  useEffect(() => {
-    getListFolder(project_Info.id).then((data) => {
+  async function loadData() {
+    await getListFolder(project_Info.id).then((data) => {
       if (data.success) {
         setListFolder(data.data)
       }
     })
+  }
+
+  useEffect(() => {
+    loadData()
   }, [router.asPath])
 
   const upload = useFormik({
@@ -35,7 +39,11 @@ export default function Document({ project_Info }) {
 
   async function handleUploadFile(values) {
     await uploadFile(parent, values.file).then((data) => {
-      console.log(data);
+      if (data.success) {
+        loadData()
+      } else {
+        alert('File too large (max size 30mb) or Invalid type file (support jpeg, PNG, PNG, xls, xlsx, ZIP, RAR, pptx, MP4, doc, docx, txt)')
+      }
     })
   }
 
@@ -59,9 +67,6 @@ export default function Document({ project_Info }) {
           <form onSubmit={upload.handleSubmit} className='flex items-center bg-white text-emerald-600 text-sm font-semibold shadow rounded-lg py-2 pl-4'>
             <input type={'file'} id="file"
               className={`block w-fit text-sm bg-white focus:ring-0 focus:border-0 ${parent === null ? 'cursor-not-allowed' : null}`}
-              multiple
-              // value={upload.values.file}
-              // onChange={upload.handleChange}
               onChange={(event) => handleFileChange(event, upload.setFieldValue)}
               disabled={parent === null}
             />
@@ -70,10 +75,11 @@ export default function Document({ project_Info }) {
             </button>
           </form>
         </div>
+        <span className='text-sm text-gray-600 italic'>Max size 30mb. Support jpeg, PNG, PNG, xls, xlsx, ZIP, RAR, pptx, MP4, doc, docx, txt</span>
         {
           listFolder.length === 0
             ? <img className="shadow-xl shadow-gray-200 rounded-xl dark:shadow-gray-900/[.2]" src="/preview.png" alt="Image Description" />
-            : <Tree listFolder={listFolder} setParent={setParent} path={{ path, setPath }} />
+            : <Tree listFolder={listFolder} setParent={setParent} path={{ path, setPath }} reload={loadData} />
         }
       </div>
       <NewFolder fn={setListFolder} project={project_Info.id} parentFolder={parent} />

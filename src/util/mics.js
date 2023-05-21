@@ -500,3 +500,41 @@ export async function uploadFile(folderId, file) {
     })
   return res
 }
+
+// update folder
+export async function updateFolder(id, name) {
+  const res = await api.put(`/api/folder/update/${id}`, { name }, await getConfig())
+    .then(response => {
+      return response.data
+    })
+    .catch(error => {
+      return error.response.data
+    })
+  return res
+}
+
+// delete folder
+export async function deleteFolder(id) {
+  const res = await api.delete(`/api/folder/delete/${id}`, await getConfig())
+    .then(response => {
+      return response.data
+    })
+    .catch(error => {
+      return error.response.data
+    })
+
+  return res
+}
+
+// delete file
+export async function deleteFile(itemId) {
+  const res = await api.delete(`/api/folder/delete/item/${itemId}`, await getConfig())
+    .then(response => {
+      return response.data
+    })
+    .catch(error => {
+      return error.response.data
+    })
+
+  return res
+}
