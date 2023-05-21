@@ -17,3 +17,13 @@ select:-webkit-autofill:focus {
   transition: background-color 5000s ease-in-out 0s;
   color: white;
 }
+
+input[type="file"]::-webkit-file-upload-button,
+input[type="file"]::-webkit-file-upload-button:hover,
+input[type="file"]::-webkit-file-upload-button:focus {
+  margin-left: 1px;
+  padding: 0.5em 1em;
+  border-radius: 0.5rem;
+  background: #10b981;
+  color: white;
+}

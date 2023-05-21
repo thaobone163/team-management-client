@@ -311,7 +311,7 @@ export async function getListTaskByProject(id) {
 
 // update task
 export async function updateTask(id, stage, title, description, assign, duedate, estimate, spend, status, tags, comment, order) {
-  const res = await api.put(`/api/task/update/${id}`, {stage, title, description, assign, duedate, estimate, spend, status, tags, comment, order}, await getConfig())
+  const res = await api.put(`/api/task/update/${id}`, { stage, title, description, assign, duedate, estimate, spend, status, tags, comment, order }, await getConfig())
     .then(response => {
       return response.data
     })
@@ -323,7 +323,7 @@ export async function updateTask(id, stage, title, description, assign, duedate,
 
 // update order task
 export async function updateOrderTask(id, order) {
-  const res = await api.put(`/api/task/update/${id}`, {order}, await getConfig())
+  const res = await api.put(`/api/task/update/${id}`, { order }, await getConfig())
     .then(response => {
       return response.data
     })
@@ -335,7 +335,7 @@ export async function updateOrderTask(id, order) {
 
 // update status task
 export async function updateStatusTask(id, status) {
-  const res = await api.put(`/api/task/update/${id}`, {status}, await getConfig())
+  const res = await api.put(`/api/task/update/${id}`, { status }, await getConfig())
     .then(response => {
       return response.data
     })
@@ -359,7 +359,7 @@ export async function getTaskById(id) {
 
 // update title + description task
 export async function updateTitleDescriptionTask(id, title, description) {
-  const res = await api.put(`/api/task/update/${id}`, {title, description}, await getConfig())
+  const res = await api.put(`/api/task/update/${id}`, { title, description }, await getConfig())
     .then(response => {
       return response.data
     })
@@ -371,7 +371,7 @@ export async function updateTitleDescriptionTask(id, title, description) {
 
 // update title task
 export async function updateTitleTask(id, title) {
-  const res = await api.put(`/api/task/update/${id}`, {title}, await getConfig())
+  const res = await api.put(`/api/task/update/${id}`, { title }, await getConfig())
     .then(response => {
       return response.data
     })
@@ -383,7 +383,7 @@ export async function updateTitleTask(id, title) {
 
 // update description task
 export async function updateDescriptionTask(id, description) {
-  const res = await api.put(`/api/task/update/${id}`, {description}, await getConfig())
+  const res = await api.put(`/api/task/update/${id}`, { description }, await getConfig())
     .then(response => {
       return response.data
     })
@@ -395,7 +395,7 @@ export async function updateDescriptionTask(id, description) {
 
 // update stage task
 export async function updateStageTask(id, stage) {
-  const res = await api.put(`/api/task/update/${id}`, {stage}, await getConfig())
+  const res = await api.put(`/api/task/update/${id}`, { stage }, await getConfig())
     .then(response => {
       return response.data
     })
@@ -407,7 +407,7 @@ export async function updateStageTask(id, stage) {
 
 // update assign task
 export async function updateAssignTask(id, assign) {
-  const res = await api.put(`/api/task/update/${id}`, {assign}, await getConfig())
+  const res = await api.put(`/api/task/update/${id}`, { assign }, await getConfig())
     .then(response => {
       return response.data
     })
@@ -433,7 +433,7 @@ export async function updateFieldTask(id, field) {
 
 // comment task
 export async function commentTask(id, comment) {
-  const res = await api.put(`/api/task/update/${id}`, {comment}, await getConfig())
+  const res = await api.put(`/api/task/update/${id}`, { comment }, await getConfig())
     .then(response => {
       return response.data
     })
@@ -471,6 +471,27 @@ export async function getListFolder(projectId) {
 // create new folder
 export async function createNewFolder(field) {
   const res = await api.post(`/api/folder/create`, field, await getConfig())
+    .then(response => {
+      return response.data
+    })
+    .catch(error => {
+      return error.response.data
+    })
+  return res
+}
+
+// upload file
+export async function uploadFile(folderId, file) {
+  const token = Cookies.get('token')
+  const formData = new FormData();
+  formData.append('files', file);
+
+  const res = await api.post(`/api/upload/${folderId}`, formData, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'multipart/form-data'
+    }
+  })
     .then(response => {
       return response.data
     })
