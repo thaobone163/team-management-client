@@ -3,13 +3,14 @@ import { useState } from "react";
 import { FcFolder, FcOpenedFolder, FcFile } from 'react-icons/fc'
 
 export default function Read({ folder, list, setParent, path }) {
+  const [show, setShow] = useState({status: false, folder: null})
+
   return (
     <>
       <div className="pl-10 space-y-3">
         {
           list.get(folder._id) !== undefined
             ? list.get(folder._id).map(item => {
-              const [show, setShow] = useState(true)
               return (
                 <div key={item._id} className="flex flex-col border-t pt-2">
                   <div data-hs-collapse={`#hs-basic-collapse-folder-${item._id}`}
@@ -18,13 +19,16 @@ export default function Read({ folder, list, setParent, path }) {
                     onClick={() => {
                       setParent(item._id)
                       path.setPath(item.path.replace('/', ' > '))
-                      setShow(!show)
+                      setShow({
+                        status: !show.status,
+                        folder: item._id
+                      })
                     }}>
                     <div className="flex items-center">
                       {
-                        show
-                          ? <FcFolder className={`w-9 h-9 mr-2`} />
-                          : <FcOpenedFolder className={`w-9 h-9 mr-2`} />
+                        show.status && show.folder === item._id
+                          ? <FcOpenedFolder className={`w-9 h-9 mr-2`} />
+                          : <FcFolder className={`w-9 h-9 mr-2`} />
                       }
                       {item.name}
                     </div>

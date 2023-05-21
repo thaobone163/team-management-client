@@ -4,6 +4,8 @@ import { useState } from 'react'
 import Link from 'next/link'
 
 export default function Tree({ listFolder, setParent, path }) {
+  const [show, setShow] = useState({status: false, folder: null})
+
   const list = new Map()
   listFolder.map((item) => {
     const child = new Set(list.get(item.parentFolder)).add(item)
@@ -14,7 +16,6 @@ export default function Tree({ listFolder, setParent, path }) {
       <div className="flex flex-col px-10 py-5 space-y-3 bg-white rounded-lg shadow">
         {
           list.get(null).map(item => {
-            const [show, setShow] = useState(true)
             return (
               <div key={item._id} className='border-b pb-2'>
                 <div data-hs-collapse={`#hs-basic-collapse-folder-${item._id}`}
@@ -23,13 +24,16 @@ export default function Tree({ listFolder, setParent, path }) {
                   onClick={() => {
                     setParent(item._id)
                     path.setPath(item.path.replace('/', ' > '))
-                    setShow(!show)
+                    setShow({
+                      status: !show.status,
+                      folder: item._id
+                    })
                   }}>
                   <div className="flex items-center">
                     {
-                      show
-                        ? <FcFolder className={`w-9 h-9 mr-2`} />
-                        : <FcOpenedFolder className={`w-9 h-9 mr-2`} />
+                      show.status && show.folder === item._id
+                      ? <FcOpenedFolder className={`w-9 h-9 mr-2`} />
+                      : <FcFolder className={`w-9 h-9 mr-2`} />
                     }
                     {item.name}
                   </div>
@@ -47,8 +51,8 @@ export default function Tree({ listFolder, setParent, path }) {
                         const name = item.url.split('-')
                         return (
                           <>
-                            <div className='flex items-center justify-between'>
-                              <Link href={item.url} className="border-t pt-2 pl-10 flex text-gray-700 items-center" key={item._id} target='_blank' >
+                            <div className='flex items-center justify-between border-t pt-2'>
+                              <Link href={item.url} className="pl-10 flex text-gray-700 items-center" key={item._id} target='_blank' >
                                 <FcFile className={`w-8 h-8 mr-2`} />
                                 {name[name.length - 1]}
                               </Link>
