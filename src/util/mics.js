@@ -538,3 +538,15 @@ export async function deleteFile(itemId) {
 
   return res
 }
+
+// graph stage time
+export async function stageTimeGraph(projectId) {
+  const res = await api.get(`/api/statistic/stagetime/${projectId}`, await getConfig())
+    .then(response => {
+      return response.data
+    })
+    .catch(error => {
+      return error.response.data
+    })
+  return res
+}

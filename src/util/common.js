@@ -73,7 +73,7 @@ export function convertToMinute(time) {
 }
 
 export function timeTracking(spend, estimate) {
-  if(spend === undefined) {
+  if (spend === undefined) {
     return 0
   }
   spend = simpleTimer(spend)
@@ -95,4 +95,47 @@ export function convertToPercentText(number) {
 
 export function convertToPercent(number) {
   return Math.round(number * 100)
+}
+
+// data = {
+//   labels,
+//   datasets: [
+//     {
+//       label: 'Expected',
+//       data: [30, 60, 22, 7],
+//       backgroundColor: 'rgba(53, 162, 235, 0.5)',
+//     },
+//     {
+//       label: 'Actual',
+//       data: [27, 60, 25, 7],
+//       backgroundColor: ['rgba(52, 199, 89, 0.5)', 'rgba(255, 69, 58, 0.5)', 'rgba(255, 69, 58, 0.5)', 'rgba(52, 199, 89, 0.5)'],
+//     },
+//   ],
+// };
+
+export function convertDataGraph(data) {
+  const mapper = new Map()
+  data.forEach((item, _) => {
+    mapper.set(item.stage, {
+      expected: item.expected,
+      actual: item.actual,
+      backgroundColor: item.expected <= item.actual ? 'rgba(52, 199, 89, 0.5)' : 'rgba(255, 69, 58, 0.5)'
+    })
+  })
+  const result = {
+    labels: Array.from(mapper.keys()),
+    datasets: [
+      {
+        label: 'Expected',
+        data: Array.from(mapper.values(), value => value.expected),
+        backgroundColor: 'rgba(53, 162, 235, 0.5)',
+      },
+      {
+        label: 'Actual',
+        data: Array.from(mapper.values(), value => value.actual),
+        backgroundColor: Array.from(mapper.values(), value => value.backgroundColor),
+      },
+    ],
+  }
+  return result
 }

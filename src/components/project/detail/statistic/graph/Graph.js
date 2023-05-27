@@ -3,7 +3,7 @@ import TaskProject from "./TaskProject";
 import TaskStage from "./TaskStage";
 import TimeTracking from "./TimeTracking";
 
-export default function Graph() {
+export default function Graph({projectId}) {
   return (
     <>
       <div className="flex flex-col space-y-3">
@@ -15,7 +15,7 @@ export default function Graph() {
             <span>
               Spend time for each stage
             </span>
-            <TimeTracking />
+            <TimeTracking projectId={projectId} />
           </div>
           <div className=" flex flex-col items-center space-y-2 text-lg text-sky-600 font-medium capitalize bg-white p-5 rounded-lg shadow w-full">
             <span>

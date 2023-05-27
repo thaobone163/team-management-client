@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -9,6 +9,9 @@ import {
   Legend,
 } from 'chart.js';
 import { Bar } from 'react-chartjs-2';
+import { stageTimeGraph } from '@/util/mics';
+import { convertDataGraph } from '@/util/common';
+import { useRouter } from 'next/router';
 
 ChartJS.register(
   CategoryScale,
@@ -26,31 +29,40 @@ export const options = {
       position: 'top',
     },
     title: {
-      display: true,
+      display: false,
       text: 'Chart.js Bar Chart',
     },
   },
 };
 
-const labels = ['StageA', 'StageB', 'StageC', 'StageD'];
+export default function TimeTracking({ projectId }) {
+  const router = useRouter()
+  const [data, setData] = useState({
+    labels:[],
+    datasets: [
+          {
+            label: 'Expected',
+            data: [],
+            backgroundColor: 'rgba(53, 162, 235, 0.5)',
+          },
+          {
+            label: 'Actual',
+            data: [],
+            backgroundColor: 'rgba(52, 199, 89, 0.5)',
+          },
+        ],
+  })
+  async function getData() {
+    await stageTimeGraph(projectId).then((data) => {
+      if (data.success) {
+        setData(convertDataGraph(data.stageTimeInfo))
+      }
+    })
+  }
+  useEffect(() => {
+    getData()
+  },[router.asPath])
 
-export const data = {
-  labels,
-  datasets: [
-    {
-      label: 'Expected',
-      data: [30, 60, 22, 7],
-      backgroundColor: 'rgba(53, 162, 235, 0.5)',
-    },
-    {
-      label: 'Actual',
-      data: [27, 60, 25, 7],
-      backgroundColor: ['rgba(52, 199, 89, 0.5)', 'rgba(255, 69, 58, 0.5)', 'rgba(255, 69, 58, 0.5)', 'rgba(52, 199, 89, 0.5)'],
-    },
-  ],
-};
-
-export default function TimeTracking() {
   return (
     <>
       <Bar options={options} data={data} />
