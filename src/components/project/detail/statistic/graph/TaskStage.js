@@ -43,12 +43,12 @@ export const data = {
   labels,
   datasets: [
     {
-      label: 'Expected',
+      label: 'Completed',
       data: [30, 60, 22, 7],
       backgroundColor: 'rgba(52, 199, 89, 0.5)',
     },
     {
-      label: 'Actual',
+      label: 'Incomplete',
       data: [27, 60, 25, 7],
       backgroundColor: 'rgba(255, 69, 58, 0.5)',
     },
