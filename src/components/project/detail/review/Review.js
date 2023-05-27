@@ -126,13 +126,13 @@ export default function Review() {
         </div>
         <div className="flex flex-col space-y-3">
           <div className="flex flex-col space-y-2">
-            <div className="capitalize text-lg text-cyan-600 font-semibold">
+            <div className="capitalize text-lg text-cyan-600 font-medium">
               project
             </div>
             <Table columns={projectCol} data={projectData} />
           </div>
           <div className="flex flex-col space-y-2">
-            <div className="capitalize text-lg text-cyan-600 font-semibold">
+            <div className="capitalize text-lg text-cyan-600 font-medium">
               Members
             </div>
             <Table columns={memberCol} data={memberData} />
