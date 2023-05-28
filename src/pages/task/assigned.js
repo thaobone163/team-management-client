@@ -43,19 +43,21 @@ export default function Assigned({ list, error }) {
   const data = React.useMemo(
     () => {
       const data = []
-      listTask.map((task) => {
-        const time = task.createdAt.split(' ')
-        data.push({
-          id: task.taskId,
-          title: task.title,
-          project: task.projectName,
-          description: task.description,
-          status: task.status,
-          duedate: formatDate(task.duedate),
-          estimate: simpleTimer(task.estimate),
-          createdAt: time[0] + ' ' + formatDate(time[1])
+      if (listTask !== undefined) {
+        listTask.map((task) => {
+          const time = task.createdAt.split(' ')
+          data.push({
+            id: task.taskId,
+            title: task.title,
+            project: task.projectName,
+            description: task.description,
+            status: task.status,
+            duedate: formatDate(task.duedate),
+            estimate: simpleTimer(task.estimate),
+            createdAt: time[0] + ' ' + formatDate(time[1])
+          })
         })
-      })
+      }
       return data
     },
     []
@@ -105,7 +107,7 @@ export default function Assigned({ list, error }) {
               </div>
               <hr className=' w-80' />
             </div>
-            <ListTask columns={columns} data={data} className='w-full'/>
+            <ListTask columns={columns} data={data} className='w-full' />
           </div>
         </div>
       </main>
