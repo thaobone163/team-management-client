@@ -562,3 +562,51 @@ export async function stageTaskGraph(projectId) {
     })
   return res
 }
+
+// list review
+export async function getListReview(projectId) {
+  const res = await api.get(`/api/review/list/${projectId}`, await getConfig())
+    .then(response => {
+      return response.data
+    })
+    .catch(error => {
+      return error.response.data
+    })
+  return res
+}
+
+// create review project
+export async function createReviewProject(projectId, review, score) {
+  const res = await api.post(`/api/review/project/create`, { projectId, review, score }, await getConfig())
+    .then(response => {
+      return response.data
+    })
+    .catch(error => {
+      return error.response.data
+    })
+  return res
+}
+
+// create review member
+export async function createReviewMember(projectId, member, review, score) {
+  const res = await api.post(`/api/review/create`, { projectId, member, review, score }, await getConfig())
+    .then(response => {
+      return response.data
+    })
+    .catch(error => {
+      return error.response.data
+    })
+  return res
+}
+
+// update review
+export async function updateReview(id, review, score) {
+  const res = await api.put(`/api/review/update/${id}`, { review, score }, await getConfig())
+    .then(response => {
+      return response.data
+    })
+    .catch(error => {
+      return error.response.data
+    })
+  return res
+}

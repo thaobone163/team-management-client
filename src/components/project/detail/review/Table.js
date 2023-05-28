@@ -2,8 +2,9 @@ import { useSortBy, useTable } from "react-table"
 import { identicon } from 'minidenticons'
 import { SlPencil } from 'react-icons/sl'
 import EditReview from "./EditReview"
+import AddReview from "./AddReview"
 
-export default function Table({ columns, data }) {
+export default function Table({ columns, data, role, projectId, fn }) {
   const tableInstance = useTable({ columns, data }, useSortBy)
 
   const {
@@ -43,7 +44,7 @@ export default function Table({ columns, data }) {
             {rows.map(row => {
               prepareRow(row)
               return (
-                <tr key={row.id} {...row.getRowProps()} className="odd:bg-white border-b even:bg-gray-50">
+                <tr key={row.id} {...row.getRowProps()} className="odd:bg-white border-b">
                   {
                     row.cells.map(cell => {
                       if (cell.column.Header === 'Project') {
@@ -63,7 +64,7 @@ export default function Table({ columns, data }) {
                                 className="w-8 h-8 border-2 shadow rounded-full" />
                               <div className="flex flex-col text-sm text-gray-700">
                                 {cell.value.name}
-                                <span className="text-gray-500 text-xs">{cell.value.email}</span>
+                                <span className="text-gray-500 text-xs truncate max-w-[100px] ">{cell.value.email}</span>
                                 <span className={cell.value.role === 'Member' ? "mt-1 px-1.5 py-0.5 w-fit bg-emerald-300 text-xs text-white font-semibold rounded-lg" :
                                   cell.value.role === 'Leader' ? "mt-1 px-1.5 py-0.5 w-fit bg-amber-200 text-xs text-amber-600 font-semibold rounded-lg" :
                                     "mt-1 px-1.5 py-0.5 w-fit bg-lime-300 text-xs text-lime-600 font-semibold rounded-lg"}>{cell.value.role}</span>
@@ -74,30 +75,46 @@ export default function Table({ columns, data }) {
                       } else if (cell.column.Header === 'Reviewer') {
                         return (
                           <td key={Math.random()} {...cell.getCellProps()} className="px-5">
-                            <div className="flex items-center space-x-2" >
-                              <img src={
-                                'data:image/svg+xml;utf8,' + encodeURIComponent(identicon(cell.value.email.replace('@', '')))
-                              }
-                                alt={cell.value.name}
-                                className="w-8 h-8 border-2 shadow rounded-full" />
-                              <div className="flex flex-col text-sm text-gray-700">
-                                {cell.value.name}
-                                <span className="text-gray-500 text-xs">{cell.value.email}</span>
-                              </div>
-                            </div>
+                            {
+                              row.original.isReviewed
+                                ? <div className="flex items-center space-x-2" >
+                                  <img src={
+                                    'data:image/svg+xml;utf8,' + encodeURIComponent(identicon(cell.value.email.replace('@', '')))
+                                  }
+                                    alt={cell.value.name}
+                                    className="w-8 h-8 border-2 shadow rounded-full" />
+                                  <div className="flex flex-col text-sm text-gray-700">
+                                    {cell.value.name}
+                                    <span className="text-gray-500 text-xs truncate max-w-[100px]">{cell.value.email}</span>
+                                  </div>
+                                </div>
+                                : <>[Not reviewed yet]</>
+                            }
                           </td>
                         )
                       } else if (cell.column.Header === 'Option') {
                         return (
                           <td key={Math.random()} {...cell.getCellProps()} className="px-5">
                             <div className="flex items-center space-x-2" >
-                              <button data-hs-overlay={`#hs-focus-edit-${row.original.id}`} className="flex items-center bg-green-400 text-white font-medium rounded shadow px-2 py-1">
+                              <button disabled={role !== 'Reviewer'} data-hs-overlay={`#hs-focus-edit-${row.original.id}`} className={`flex items-center bg-green-400 text-white font-medium rounded shadow px-2 py-1 ${role !== 'Reviewer' ? 'cursor-not-allowed' : ''} `}>
                                 <SlPencil className="mr-2" />
                                 Edit
                               </button>
                               <div id={`hs-focus-edit-${row.original.id}`} className="hs-overlay hidden w-full h-full fixed top-0 left-0 z-[60] overflow-x-hidden overflow-y-auto">
-                                <EditReview data={row.original}/>
+                                <EditReview data={row.original} fn={fn}/>
                               </div>
+                              {
+                                !row.original.isReviewed
+                                  ? <>
+                                    <button disabled={role !== 'Reviewer'} data-hs-overlay={`#hs-focus-review-${row.original.id}`} className={`flex items-center bg-sky-400 text-white font-medium rounded shadow px-2 py-1 ${role !== 'Reviewer' ? 'cursor-not-allowed' : ''}`}>
+                                      Review
+                                    </button>
+                                    <div id={`hs-focus-review-${row.original.id}`} className="hs-overlay hidden w-full h-full fixed top-0 left-0 z-[60] overflow-x-hidden overflow-y-auto">
+                                      <AddReview data={row.original} projectId={projectId} fn={fn}/>
+                                    </div>
+                                  </>
+                                  : null
+                              }
                             </div>
                           </td>
                         )

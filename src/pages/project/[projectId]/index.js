@@ -19,7 +19,7 @@ export default function ProjectDetail({ data, error, plan }) {
         setAlwayUpdate(data.plan)
       }
     })
-  },[router.asPath])
+  }, [router.asPath])
 
   if (error) {
     return (
@@ -142,6 +142,14 @@ export async function getServerSideProps(context) {
         },
       })
 
+    const user = await axios.get(`https://api.projectmana.online//api/user/${response.data.user.email}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+
+    response.data.user.detail = user.data
     return {
       props: {
         data: response.data,

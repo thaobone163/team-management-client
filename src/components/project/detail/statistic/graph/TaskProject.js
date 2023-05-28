@@ -5,7 +5,6 @@ import { Pie } from 'react-chartjs-2';
 ChartJS.register(ArcElement, Tooltip, Legend);
 
 export default function TaskProject({ totalTask }) {
-  console.log(totalTask);
   const data = {
     labels: Array.from(totalTask, data => data.stage),
     datasets: [
