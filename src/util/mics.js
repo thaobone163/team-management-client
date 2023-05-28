@@ -634,3 +634,15 @@ export async function getListNotification() {
     })
   return res
 }
+
+//contact
+export async function contactAndFeedback(fullname, email, subject, content) {
+  const res = await api.post(`/api/email/feedback`, { fullname, email, subject, content }, await getConfig())
+    .then(response => {
+      return response.data
+    })
+    .catch(error => {
+      return error.response.data
+    })
+  return res
+}

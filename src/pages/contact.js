@@ -1,7 +1,29 @@
+import { contactAndFeedback } from '@/util/mics';
+import { useFormik } from 'formik';
 import Head from 'next/head'
-import { BsCalendarCheck, BsJournalCheck } from 'react-icons/bs'
-import { SiSimpleanalytics } from 'react-icons/si'
 export default function Test() {
+  const formik = useFormik({
+    initialValues: {
+      fullname: '',
+      email: '',
+      subject: '',
+      content: ''
+    },
+    onSubmit: feedback
+  })
+
+  async function feedback(values) {
+    await contactAndFeedback(values.fullname, values.email, values.subject, values.content).then((data) => {
+      alert(data.message)
+      formik.setValues({
+        fullname: '',
+        email: '',
+        subject: '',
+        content: ''
+      })
+    })
+  }
+
   return (
     <>
       <Head>
@@ -63,26 +85,42 @@ export default function Test() {
             <div className="flex flex-col rounded-xl border p-4 dark:border-gray-700 sm:p-6 lg:p-8">
               <h2 className="mb-8 text-xl font-semibold text-gray-800 dark:text-gray-200">Fill in the form</h2>
 
-              <form>
+              <form onSubmit={formik.handleSubmit}>
                 <div className="grid gap-4">
                   <div>
-                    <label htmlFor="hs-full-name-contacts-1" className="sr-only">Full Name</label>
-                    <input type="text" name="hs-full-name-contacts-1" id="hs-full-name-contacts-1" className="block w-full rounded-md border border-gray-200 px-4 py-3 text-sm focus:border-blue-500 focus:ring-blue-500 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-400" placeholder="Full Name" />
+                    <label htmlFor="fullname" className="sr-only">Full Name</label>
+                    <input type="text" name="fullname" id="fullname"
+                      className="block w-full rounded-md border border-gray-200 px-4 py-3 text-sm focus:border-blue-500 focus:ring-blue-500 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-400"
+                      placeholder="Full Name"
+                      value={formik.values.fullname}
+                      onChange={formik.handleChange} />
                   </div>
 
                   <div>
-                    <label htmlFor="hs-email-contacts-1" className="sr-only">Email</label>
-                    <input type="email" name="hs-email-contacts-1" id="hs-email-contacts-1" autoComplete="email" className="block w-full rounded-md border border-gray-200 px-4 py-3 text-sm focus:border-blue-500 focus:ring-blue-500 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-400" placeholder="Email" />
+                    <label htmlFor="email" className="sr-only">Email</label>
+                    <input type="email" name="email" id="email" autoComplete="email"
+                      className="block w-full rounded-md border border-gray-200 px-4 py-3 text-sm focus:border-blue-500 focus:ring-blue-500 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-400"
+                      placeholder="Email"
+                      value={formik.values.email}
+                      onChange={formik.handleChange}
+                    />
                   </div>
 
                   <div>
-                    <label htmlFor="hs-phone-number-1" className="sr-only">Phone Number</label>
-                    <input type="text" name="hs-phone-number-1" id="hs-phone-number-1" className="block w-full rounded-md border border-gray-200 px-4 py-3 text-sm focus:border-blue-500 focus:ring-blue-500 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-400" placeholder="Phone Number" />
+                    <label htmlFor="subject" className="sr-only">Subject</label>
+                    <input type="text" name="subject" id="subject"
+                      className="block w-full rounded-md border border-gray-200 px-4 py-3 text-sm focus:border-blue-500 focus:ring-blue-500 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-400"
+                      placeholder="Subject"
+                      value={formik.values.subject}
+                      onChange={formik.handleChange} />
                   </div>
 
                   <div>
-                    <label htmlFor="hs-about-contacts-1" className="sr-only">Details</label>
-                    <textarea id="hs-about-contacts-1" name="hs-about-contacts-1" rows="4" className="block w-full rounded-md border border-gray-200 px-4 py-3 text-sm focus:border-blue-500 focus:ring-blue-500 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-400" placeholder="Feedback Details"></textarea>
+                    <label htmlFor="content" className="sr-only">Details</label>
+                    <textarea id="content" name="content" rows="4" className="block w-full rounded-md border border-gray-200 px-4 py-3 text-sm focus:border-blue-500 focus:ring-blue-500 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-400"
+                      placeholder="Feedback Details"
+                      value={formik.values.content}
+                      onChange={formik.handleChange} />
                   </div>
                 </div>
 
