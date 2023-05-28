@@ -140,7 +140,7 @@ export default function Password() {
                     </form> :
                     <button onClick={toggleChange} className='flex text-gray-600 bg-gray-50 font-medium rounded-md px-3 py-2 shadow-lg'>
                         <FcKey className='w-6 h-6 mr-3' />
-                        Change password for account thaobone163@gmail.com ?
+                        Change password for this account?
                     </button>
                 }
             </div>
