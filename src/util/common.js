@@ -119,7 +119,7 @@ export function convertDataGraph(data) {
     mapper.set(item.stage, {
       expected: item.expected,
       actual: item.actual,
-      backgroundColor: item.expected <= item.actual ? 'rgba(52, 199, 89, 0.5)' : 'rgba(255, 69, 58, 0.5)'
+      backgroundColor: item.expected >= item.actual ? 'rgba(52, 199, 89, 0.5)' : 'rgba(255, 69, 58, 0.5)'
     })
   })
   const result = {

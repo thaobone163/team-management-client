@@ -37,24 +37,21 @@ export const options = {
   },
 };
 
-const labels = ['StageA', 'StageB', 'StageC', 'StageD'];
-
-export const data = {
-  labels,
-  datasets: [
-    {
-      label: 'Completed',
-      data: [30, 60, 22, 7],
-      backgroundColor: 'rgba(52, 199, 89, 0.5)',
-    },
-    {
-      label: 'Incomplete',
-      data: [27, 60, 25, 7],
-      backgroundColor: 'rgba(255, 69, 58, 0.5)',
-    },
-  ],
-};
-
-export default function TaskStage() {
+export default function TaskStage({doneAndUndoneTask}) {
+  const data = {
+    labels: Array.from(doneAndUndoneTask, data => data.stage),
+    datasets: [
+      {
+        label: 'Completed',
+        data: Array.from(doneAndUndoneTask, data => data.doneTaskCount),
+        backgroundColor: 'rgba(52, 199, 89, 0.5)',
+      },
+      {
+        label: 'Incomplete',
+        data: Array.from(doneAndUndoneTask, data => data.undoneTaskCount),
+        backgroundColor: 'rgba(255, 69, 58, 0.5)',
+      },
+    ],
+  }
   return <Bar options={options} data={data} />;
 }

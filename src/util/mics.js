@@ -550,3 +550,15 @@ export async function stageTimeGraph(projectId) {
     })
   return res
 }
+
+// stage task
+export async function stageTaskGraph(projectId) {
+  const res = await api.get(`/api/statistic/taskofstage/${projectId}`, await getConfig())
+    .then(response => {
+      return response.data
+    })
+    .catch(error => {
+      return error.response.data
+    })
+  return res
+}
