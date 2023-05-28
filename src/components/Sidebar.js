@@ -63,13 +63,13 @@ export default function SideBar(props) {
             </div>
             {option === 'notification' ? <div className='w-2 h-10 mr-px -my-4 bg-sky-400 rounded-l-md'></div> : <div className='w-2 h-10 mr-px -my-4 rounded-l-md'></div>}
           </Link>
-          <button className='flex items-center justify-between'>
+          <Link href={'/contact'} className='flex items-center justify-between'>
             <div className='flex items-center'>
               <AiOutlineMail className='w-6 h-6 mr-5' />
               {show ? <span className='pr-5'>Contact</span> : null}
             </div>
             {option === 'contact' ? <div className='w-2 h-10 mr-px -my-4 bg-sky-400 rounded-l-md'></div> : <div className='w-2 h-10 mr-px -my-4 rounded-l-md'></div>}
-          </button>
+          </Link>
         </div>
       </div>
     </>

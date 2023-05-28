@@ -137,7 +137,7 @@ export default function Detail({ data, plan, timeline }) {
                   <Document project_Info={{name: data.project_name, id: data.project_id}}/>
                 </div>
                 <div className={openTab === 'Statistic' || tab === 'Statistic' ? "block" : "hidden"} id="statistic">
-                  <Statistic projectId={data.project_id}/>
+                  <Statistic projectId={data.project_id} plan={plan.timeline}/>
                 </div>
               </div>
             </div>

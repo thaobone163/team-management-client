@@ -3,7 +3,7 @@ import TaskProject from "./TaskProject";
 import TaskStage from "./TaskStage";
 import TimeTracking from "./TimeTracking";
 
-export default function Graph({projectId}) {
+export default function Graph({projectId, plan}) {
   return (
     <>
       <div className="flex flex-col space-y-3">
@@ -22,7 +22,7 @@ export default function Graph({projectId}) {
               Progress by stage
             </span>
             <div className="w-[50%] ">
-              <Progress />
+              <Progress plan={plan}/>
             </div>
           </div>
           <div className=" flex flex-col items-center space-y-2 text-lg text-sky-600 font-medium capitalize bg-white p-5 rounded-lg shadow w-full">
