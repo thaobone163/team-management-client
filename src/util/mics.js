@@ -610,3 +610,27 @@ export async function updateReview(id, review, score) {
     })
   return res
 }
+
+// read noti
+export async function readNotification() {
+  const res = await api.put(`/api/notification/read`, {}, await getConfig())
+    .then(response => {
+      return response.data
+    })
+    .catch(error => {
+      return error.response.data
+    })
+  return res
+}
+
+// list notification
+export async function getListNotification() {
+  const res = await api.get(`/api/notification/list`, await getConfig())
+    .then(response => {
+      return response.data
+    })
+    .catch(error => {
+      return error.response.data
+    })
+  return res
+}

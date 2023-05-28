@@ -21,7 +21,7 @@ export default function ProjectDetail({ data, error, plan }) {
     })
   }, [router.asPath])
 
-  if (error) {
+  if (error || data.user.status === 'Waiting') {
     return (
       <>
         <Head>
@@ -32,7 +32,7 @@ export default function ProjectDetail({ data, error, plan }) {
           <div className='flex space-x-12'>
             <Overview />
             <div className='pt-10 w-[90%] text-center text-gray-500'>
-              <Error error={error} />
+              <Error error={error ? error : 'You must accept invitation!'} />
             </div>
           </div>
         </main>

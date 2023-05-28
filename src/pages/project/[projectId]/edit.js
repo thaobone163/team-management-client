@@ -11,7 +11,7 @@ export default function Edit({ data, error }) {
   const router = useRouter()
   const { projectId } = router.query
 
-  if (error) {
+  if (error || data.user.status === 'Waiting') {
     return (
       <>
         <Head>
@@ -22,7 +22,7 @@ export default function Edit({ data, error }) {
           <div className='flex space-x-12'>
             <Overview />
             <div className='pt-10 w-[90%] text-center text-gray-500'>
-              <Error error={error} />
+              <Error error={error ? error : 'You must accept invitation!'} />
             </div>
           </div>
         </main>
