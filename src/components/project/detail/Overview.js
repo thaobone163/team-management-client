@@ -41,7 +41,7 @@ export default function OverviewDetail({ data, timeline }) {
             <hr className="h-px" />
             <div className="text-md text-gray-700 font-medium p-5 pb-0">
               Project Members ({data.teammate.length + 1})
-              <div className="flex flex-wrap justify-between space-y-2 pt-3 -mx-6 tracking-tighter">
+              <div className="flex flex-wrap justify-between space-x-2 pt-3 -mx-6 tracking-tighter">
                 {
                   currentPage !== 0
                     ? <button onClick={previous} className="text-gray-500">
@@ -51,7 +51,7 @@ export default function OverviewDetail({ data, timeline }) {
                 }
                 <div className="flex space-x-5">
                   {
-                    members.slice(currentPage, currentPage + 3).map((value, index) => {
+                    members.slice(currentPage, currentPage + 2).map((value, index) => {
                       if (value.email === data.user.email) {
                         return (
                           <div key={index} title={data.user.email} className="flex items-center space-x-1.5">
@@ -116,7 +116,7 @@ export default function OverviewDetail({ data, timeline }) {
                   }
                 </div>
                 {
-                  currentPage < members.length - 3
+                  currentPage < members.length - 2
                     ? <button onClick={next} className="text-gray-500">
                       <MdOutlineNavigateNext />
                     </button>
@@ -125,9 +125,9 @@ export default function OverviewDetail({ data, timeline }) {
                 }
               </div>
               {
-                data.teammate.length > 3
+                data.teammate.length > 1
                   ? <div className="text-xs text-gray-600 font-normal italic pr-2 pt-3 text-right">
-                    + {data.teammate.length - 2} people
+                    + {data.teammate.length - 1} people
                   </div>
                   : null
               }
